@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Courses | UIU Question Bank</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="courses">
+    <header class="topbar">
+        <a class="brand" href="index.html" aria-label="UIU Question Bank dashboard">
+            <span class="brand-mark">QB</span>
+            <span>UIU Question Bank</span>
+        </a>
+        <nav class="nav-links" aria-label="Primary navigation">
+            <a href="index.html">Dashboard</a>
+            <a href="upload.html">Upload</a>
+            <a class="active" href="courses.html">All Courses</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-head">
+            <span class="eyebrow">All Courses</span>
+            <h1>Questions, solutions, and notes by course.</h1>
+            <p>Questions and solutions are grouped together. Notes stay in their own topic-based list.</p>
+        </section>
+
+        <section class="section">
+            <div class="section-title">
+                <div>
+                    <h2>Course Grid</h2>
+                    <p class="muted">Browse approved materials only.</p>
+                </div>
+                <div class="toolbar">
+                    <input id="allCourseSearch" type="search" placeholder="Filter course grid">
+                    <select id="assetFilter">
+                        <option value="">All Materials</option>
+                        <option value="question">Questions</option>
+                        <option value="solution">Solutions</option>
+                        <option value="note">Notes</option>
+                    </select>
+                </div>
+            </div>
+            <div id="allCoursesGrid" class="courses-grid">
+                <div class="empty">Loading courses...</div>
+            </div>
+        </section>
+    </main>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
