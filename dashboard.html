@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | UIU Question Bank</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="dashboard">
+    <header class="topbar">
+        <a class="brand" href="/dashboard" aria-label="UIU Question Bank dashboard">
+            <span class="brand-mark">QB</span>
+            <span>UIU Question Bank</span>
+        </a>
+        <nav class="nav-links" aria-label="Primary navigation">
+            <a class="active" href="/dashboard">Dashboard</a>
+            <a href="/upload">Upload</a>
+            <a href="/courses">All Courses</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="dashboard-shell">
+            <div class="hero-panel">
+                <div>
+                    <h1>Find university course questions faster.</h1>
+                    <p>Search approved UIU course questions and solutions, choose a course, and jump into the exact material you need.</p>
+                    <div class="hero-actions">
+                        <a class="button-link" href="/upload">Upload Material</a>
+                        <a class="button-link button-secondary" href="/courses">Browse Courses</a>
+                    </div>
+                </div>
+                <div class="stats-grid" aria-label="Question bank statistics">
+                    <div class="stat">
+                        <strong id="courseCount">0</strong>
+                        <span>Courses</span>
+                    </div>
+                    <div class="stat">
+                        <strong id="questionCount">0</strong>
+                        <span>Questions</span>
+                    </div>
+                    <div class="stat">
+                        <strong id="solutionCount">0</strong>
+                        <span>Solutions</span>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="panel" aria-label="Course search dashboard">
+                <h2>Dashboard</h2>
+                <p class="muted">Questions and solutions are shown here after admin approval.</p>
+                <div class="search-wrap">
+                    <span class="search-icon">?</span>
+                    <input id="courseSearch" type="search" placeholder="Search course code, title, trimester">
+                    <button id="courseSearchButton" type="button">Search</button>
+                </div>
+                <div id="dashboardCourses" class="course-list">
+                    <div class="empty">Loading approved courses...</div>
+                </div>
+            </aside>
+        </section>
+
+        <section class="section">
+            <div class="section-title">
+                <div>
+                    <h2 id="selectedCourseTitle">Selected Course</h2>
+                    <p id="selectedCourseMeta" class="muted">Use search to focus a course.</p>
+                </div>
+                <a class="button-link button-plain" href="/courses">View All Courses</a>
+            </div>
+            <div id="selectedResources" class="resource-list">
+                <div class="empty">Approved questions and solutions will appear here.</div>
+            </div>
+        </section>
+    </main>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
