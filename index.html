@@ -1,48 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UIU CSE Question Bank - Admin Portal</title>
-    <!-- Google Fonts -->
+    <title>UIU CSE Question Bank</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
         :root {
-            --primary: #F37021;
-            --primary-hover: #d95e14;
-            --secondary: #005696;
-            --secondary-hover: #00427a;
-            --success: #10B981;
-            --danger: #EF4444;
-            --warning: #F59E0B;
-            --info: #3B82F6;
-            
-            --bg: #f8fafc;
+            /* Light Theme Variables */
+            --orange: #f37021;
+            --orange-2: #ff9f45;
+            --orange-light: rgba(243, 112, 33, 0.1);
+            --bg: #f8f9fa;
             --surface: #ffffff;
-            --surface-hover: #f1f5f9;
-            --border: #e2e8f0;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            
-            --sidebar-width: 250px;
-            --header-height: 70px;
-            --radius: 8px;
-            --radius-lg: 12px;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --surface-2: #f1f3f5;
+            --text-main: #1a1a2e;
+            --text-muted: #6c757d;
+            --border: #e9ecef;
+            --border-hover: #dee2e6;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            --error: #dc3545;
+            --success: #198754;
+            --info: #0dcaf0;
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-full: 9999px;
             --transition: all 0.2s ease;
+            --font-family: 'Inter', sans-serif;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.2);
         }
 
         [data-theme="dark"] {
-            --bg: #0b0f19;
-            --surface: #151c2c;
-            --surface-hover: #1e293b;
-            --border: #232d42;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+            /* Dark Theme Variables */
+            --bg: #0f0f1a;
+            --surface: #1a1a2e;
+            --surface-2: #222244;
+            --text-main: #f8f9fa;
+            --text-muted: #adb5bd;
+            --border: #2c2c44;
+            --border-hover: #3d3d5c;
+            --glass-bg: rgba(26, 26, 46, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.2);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.3);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.4);
         }
 
         * {
@@ -52,102 +59,160 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-family);
             background-color: var(--bg);
             color: var(--text-main);
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-            transition: var(--transition);
+            line-height: 1.5;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
         }
 
         a {
-            color: var(--info);
+            color: inherit;
             text-decoration: none;
         }
-        
-        a:hover {
-            text-decoration: underline;
+
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            background: none;
         }
 
-        /* --- Scrollbar --- */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--text-muted);
+        input, select, textarea {
+            font-family: inherit;
+            color: var(--text-main);
         }
 
-        /* --- Auth View --- */
-        #auth-view {
+        /* Topbar */
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            height: 64px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            transition: var(--transition);
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--orange);
+        }
+
+        .logo-mark {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--orange), var(--orange-2));
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 100%;
-            height: 100vh;
-            background-color: var(--bg);
-            z-index: 1000;
-            position: fixed;
-            top: 0;
-            left: 0;
+            color: white;
+            font-weight: bold;
         }
 
-        .auth-card {
-            background: var(--surface);
-            padding: 2.5rem;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow);
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-        }
-        
-        .auth-card h2 {
-            margin-bottom: 0.5rem;
-            color: var(--primary);
-        }
-        
-        .auth-card p {
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-            font-size: 0.9rem;
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
         }
 
-        .form-group {
-            margin-bottom: 1.5rem;
-            text-align: left;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
+        .nav-link {
             font-weight: 500;
-            font-size: 0.9rem;
-        }
-        
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            background: var(--bg);
-            color: var(--text-main);
-            font-family: inherit;
+            color: var(--text-muted);
             transition: var(--transition);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+        }
+
+        .nav-link:hover {
+            color: var(--orange);
+            background: var(--orange-light);
+        }
+
+        .nav-link.active {
+            color: var(--orange);
+            background: var(--orange-light);
+        }
+
+        .theme-toggle {
+            padding: 0.5rem;
+            border-radius: var(--radius-full);
+            color: var(--text-main);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            background: var(--surface-2);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            padding: 0.5rem;
+            color: var(--text-main);
+        }
+
+        /* Main Container */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: calc(100vh - 64px);
+        }
+
+        /* Page Transitions */
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 1rem;
         }
         
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(243, 112, 33, 0.1);
+        .text-muted {
+            color: var(--text-muted);
+        }
+
+        /* Components */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--border-hover);
         }
 
         .btn {
@@ -156,819 +221,808 @@
             justify-content: center;
             gap: 0.5rem;
             padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: var(--radius);
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            font-family: inherit;
-        }
-        
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-            width: 100%;
-        }
-        
-        .btn-primary:hover {
-            background-color: var(--primary-hover);
-        }
-        
-        .btn-success { background: var(--success); color: white; }
-        .btn-success:hover { background: #059669; }
-        .btn-danger { background: var(--danger); color: white; }
-        .btn-danger:hover { background: #dc2626; }
-        .btn-warning { background: var(--warning); color: white; }
-        .btn-warning:hover { background: #d97706; }
-        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
-        .btn-outline:hover { background: var(--surface-hover); }
-
-        /* --- App Layout --- */
-        #app-layout {
-            display: none; /* hidden until auth */
-            width: 100%;
-            height: 100%;
-        }
-
-        /* --- Sidebar --- */
-        .sidebar {
-            width: var(--sidebar-width);
-            background-color: var(--surface);
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            z-index: 10;
-        }
-
-        .sidebar-brand {
-            height: var(--header-height);
-            display: flex;
-            align-items: center;
-            padding: 0 1.5rem;
-            border-bottom: 1px solid var(--border);
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: var(--primary);
-            gap: 0.75rem;
-        }
-        
-        .sidebar-brand i {
-            font-size: 1.5rem;
-            color: var(--secondary);
-        }
-
-        .sidebar-nav {
-            flex: 1;
-            padding: 1.5rem 1rem;
-            overflow-y: auto;
-        }
-        
-        .nav-item {
-            display: flex;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            color: var(--text-muted);
-            text-decoration: none;
-            border-radius: var(--radius);
-            margin-bottom: 0.5rem;
+            border-radius: var(--radius-sm);
             font-weight: 500;
             transition: var(--transition);
-            gap: 1rem;
         }
-        
-        .nav-item i {
-            width: 20px;
-            text-align: center;
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--orange), var(--orange-2));
+            color: white;
+            box-shadow: 0 4px 10px rgba(243, 112, 33, 0.3);
         }
-        
-        .nav-item:hover {
-            background-color: var(--surface-hover);
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--border);
+            background: transparent;
             color: var(--text-main);
         }
-        
-        .nav-item.active {
-            background-color: rgba(243, 112, 33, 0.1);
-            color: var(--primary);
-            border-right: 3px solid var(--primary);
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
+
+        .btn-outline:hover {
+            background: var(--surface-2);
         }
 
-        .sidebar-footer {
-            padding: 1rem;
-            border-top: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+        .input-group {
+            margin-bottom: 1.5rem;
         }
 
-        .admin-profile {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            flex: 1;
-            overflow: hidden;
+        .input-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
         }
-        
-        .admin-avatar {
-            width: 36px;
-            height: 36px;
-            background: var(--secondary);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
+
+        .input-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--surface);
+            transition: var(--transition);
         }
-        
-        .admin-info {
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+
+        .input-control:focus {
+            outline: none;
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px var(--orange-light);
         }
-        
-        .admin-name {
-            font-size: 0.85rem;
-            font-weight: 600;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .admin-role {
+
+        .pill {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
             font-size: 0.75rem;
+            font-weight: 600;
+            background: var(--surface-2);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+
+        .pill.primary {
+            background: var(--orange-light);
+            color: var(--orange);
+            border-color: var(--orange-light);
+        }
+
+        /* Dashboard Specific */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, var(--surface), var(--surface-2));
+            border-radius: var(--radius-lg);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at top right, var(--orange-light), transparent 50%);
+            pointer-events: none;
+        }
+
+        .search-container {
+            max-width: 600px;
+            margin: 2rem auto 0;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1.25rem 1.5rem;
+            padding-left: 3rem;
+            font-size: 1.1rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-full);
+            background: var(--surface);
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--orange);
+            box-shadow: 0 0 0 4px var(--orange-light);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
             color: var(--text-muted);
         }
-
-        /* --- Main Content --- */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            background-color: var(--bg);
+        
+        .autocomplete-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            max-height: 360px;
+            overflow-y: auto;
+            display: none;
+            z-index: 50;
+            margin-top: 0.5rem;
         }
-
-        .header {
-            height: var(--header-height);
-            background-color: var(--surface);
+        .autocomplete-dropdown.active {
+            display: block;
+        }
+        .autocomplete-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 1px solid var(--border);
+        }
+        .autocomplete-item:last-child {
+            border-bottom: none;
+        }
+        .autocomplete-item:hover,
+        .autocomplete-item.highlighted {
+            background: var(--orange-light);
+        }
+            border-radius: var(--radius-md);
+            margin-top: 0.5rem;
+            box-shadow: var(--shadow-lg);
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 10;
+            display: none;
+        }
+        .autocomplete-dropdown.active {
+            display: block;
+        }
+        
+        .autocomplete-item {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 2rem;
         }
-        
-        .header-title {
-            font-size: 1.25rem;
-            font-weight: 600;
+        .autocomplete-item:hover, .autocomplete-item.selected {
+            background: var(--surface-2);
         }
 
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .search-bar {
-            display: flex;
-            align-items: center;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 0.5rem 1rem;
-            width: 300px;
-        }
-        
-        .search-bar input {
-            border: none;
-            background: transparent;
-            outline: none;
-            width: 100%;
-            margin-left: 0.5rem;
-            color: var(--text-main);
-        }
-
-        .icon-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            font-size: 1.25rem;
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-        }
-        
-        .icon-btn:hover {
-            background: var(--surface-hover);
-            color: var(--text-main);
-        }
-
-        /* --- Page Content --- */
-        .page-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 2rem;
-            display: none;
-        }
-        
-        .page-content.active {
-            display: block;
-        }
-
-        /* --- Dashboard Stats --- */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1.5rem;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
         }
         
         .stat-card {
+            text-align: center;
+            padding: 2rem;
             background: var(--surface);
-            padding: 1.5rem;
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-md);
             border: 1px solid var(--border);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+            box-shadow: var(--shadow-sm);
         }
         
-        .stat-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-        
-        .stat-info {
-            flex: 1;
-        }
-        
-        .stat-value {
-            font-size: 1.75rem;
+        .stat-number {
+            font-size: 2.5rem;
             font-weight: 700;
-            margin-bottom: 0.25rem;
-        }
-        
-        .stat-label {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            font-weight: 500;
+            color: var(--orange);
+            margin-bottom: 0.5rem;
         }
 
-        /* --- Cards & Tables --- */
-        .card {
-            background: var(--surface);
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border);
-            overflow: hidden;
+        .horizontal-scroll {
+            display: flex;
+            overflow-x: auto;
+            gap: 1rem;
+            padding-bottom: 1rem;
             margin-bottom: 2rem;
+            scrollbar-width: thin;
         }
         
-        .card-header {
-            padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid var(--border);
+        .horizontal-scroll::-webkit-scrollbar {
+            height: 6px;
+        }
+        .horizontal-scroll::-webkit-scrollbar-thumb {
+            background: var(--border-hover);
+            border-radius: 3px;
+        }
+
+        .trimester-card {
+            flex: 0 0 auto;
+            width: 150px;
+            text-align: center;
+            padding: 1.5rem 1rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .trimester-card:hover {
+            border-color: var(--orange);
+            background: var(--orange-light);
+            transform: translateY(-2px);
+        }
+
+        .semester-pill {
+            flex: 0 0 auto;
+            padding: 0.5rem 1.5rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+        .semester-pill:hover, .semester-pill.active {
+            background: var(--orange);
+            color: white;
+            border-color: var(--orange);
+        }
+
+        /* Course Grid */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .course-card {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .course-card .fav-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: var(--border-hover);
+            transition: var(--transition);
+            background: var(--surface-2);
+            border-radius: 50%;
+            width: 32px; height: 32px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .course-card .fav-btn.active {
+            color: var(--error);
+        }
+        .course-card .fav-btn:hover {
+            background: var(--border);
+        }
+
+        .course-stats {
+            display: flex;
+            gap: 1rem;
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Course Detail */
+        .course-header {
+            background: linear-gradient(135deg, var(--surface), var(--surface-2));
+            padding: 3rem 2rem;
+            border-radius: var(--radius-lg);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        .resource-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .resource-card {
             display: flex;
             align-items: center;
             justify-content: space-between;
-        }
-        
-        .card-title {
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-        
-        .table-responsive {
-            overflow-x: auto;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        th, td {
             padding: 1rem 1.5rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.9rem;
-        }
-        
-        th {
-            background-color: var(--surface-hover);
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 0.05em;
-        }
-        
-        tbody tr:hover {
-            background-color: var(--surface-hover);
-        }
-
-        /* --- Badges --- */
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.25rem 0.6rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-        
-        .badge-pending { background: rgba(245, 158, 11, 0.1); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.2); }
-        .badge-review { background: rgba(59, 130, 246, 0.1); color: var(--info); border: 1px solid rgba(59, 130, 246, 0.2); }
-        .badge-approved { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
-        .badge-rejected { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); }
-        .badge-revision { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; border: 1px solid rgba(139, 92, 246, 0.2); }
-
-        /* --- Review Modal --- */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
             transition: var(--transition);
         }
-        
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
+        .resource-card:hover {
+            border-color: var(--orange);
         }
         
-        .modal-container {
+        .resource-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .resource-meta {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+        
+        .resource-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        /* Upload Form */
+        .upload-stepper {
+            max-width: 600px;
+            margin: 0 auto;
             background: var(--surface);
-            width: 95%;
-            max-width: 1200px;
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .form-step {
+            display: none;
+        }
+        .form-step.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        .step-indicator::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 0; right: 0;
+            height: 2px;
+            background: var(--border);
+            z-index: 1;
+        }
+        .step-dot {
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 2px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold;
+            z-index: 2;
+            position: relative;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+        .step-dot.active {
+            border-color: var(--orange);
+            color: var(--orange);
+            background: var(--orange-light);
+        }
+        .step-dot.completed {
+            background: var(--orange);
+            border-color: var(--orange);
+            color: white;
+        }
+
+        .file-drop-area {
+            border: 2px dashed var(--border-hover);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background: var(--surface-2);
+        }
+        .file-drop-area:hover, .file-drop-area.dragover {
+            border-color: var(--orange);
+            background: var(--orange-light);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--surface);
+            width: 100%;
+            max-width: 1000px;
             height: 90vh;
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-md);
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            transform: translateY(20px);
-            transition: var(--transition);
-        }
-        
-        .modal-overlay.active .modal-container {
-            transform: translateY(0);
+            box-shadow: var(--shadow-lg);
         }
         
         .modal-header {
-            padding: 1.25rem 1.5rem;
+            padding: 1rem 1.5rem;
             border-bottom: 1px solid var(--border);
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
         }
         
         .modal-body {
-            display: flex;
             flex: 1;
-            overflow: hidden;
+            background: var(--surface-2);
         }
         
-        .modal-preview {
-            flex: 2;
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            background: var(--bg);
-        }
-        
-        .preview-tabs {
-            display: flex;
-            border-bottom: 1px solid var(--border);
-            background: var(--surface);
-        }
-        
-        .preview-tab {
-            padding: 0.75rem 1.5rem;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            font-weight: 500;
-        }
-        
-        .preview-tab.active {
-            border-bottom-color: var(--primary);
-            color: var(--primary);
-        }
-        
-        .preview-content {
-            flex: 1;
-            padding: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: auto;
-        }
-        
-        .preview-content iframe {
+        .modal-body iframe {
             width: 100%;
             height: 100%;
             border: none;
-            background: white;
-        }
-        
-        .preview-content img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
-        
-        .modal-details {
-            flex: 1;
-            padding: 1.5rem;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-        
-        .detail-group h4 {
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.5rem;
-        }
-        
-        .detail-group p {
-            font-size: 1rem;
-            font-weight: 500;
-        }
-        
-        .action-bar {
-            margin-top: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border);
-        }
-        
-        .action-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.75rem;
         }
 
-        /* --- Toast --- */
+        /* Toasts */
         .toast-container {
             position: fixed;
             bottom: 2rem;
             right: 2rem;
-            z-index: 2000;
+            z-index: 9999;
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
+            gap: 0.5rem;
         }
-        
         .toast {
-            background: var(--surface);
-            border-left: 4px solid var(--primary);
-            box-shadow: var(--shadow);
             padding: 1rem 1.5rem;
-            border-radius: var(--radius);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            transform: translateX(100%);
-            opacity: 0;
-            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-        
-        .toast.show {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        
-        .toast.success { border-color: var(--success); }
-        .toast.error { border-color: var(--danger); }
-        .toast.warning { border-color: var(--warning); }
-        .toast.info { border-color: var(--info); }
-        
-        .toast i { font-size: 1.25rem; }
-        .toast.success i { color: var(--success); }
-        .toast.error i { color: var(--danger); }
-        .toast.warning i { color: var(--warning); }
-        .toast.info i { color: var(--info); }
-
-        /* Loader */
-        .loader {
-            border: 3px solid rgba(0,0,0,0.1);
-            border-top: 3px solid var(--primary);
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* Filters */
-        .filters-bar {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .filter-select {
-            padding: 0.5rem 1rem;
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
+            border-radius: var(--radius-sm);
             background: var(--surface);
             color: var(--text-main);
-            outline: none;
+            box-shadow: var(--shadow-lg);
+            border-left: 4px solid var(--info);
+            animation: slideIn 0.3s ease forwards;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-width: 300px;
+        }
+        .toast.success { border-color: var(--success); }
+        .toast.error { border-color: var(--error); }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
+        /* Loading Skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, var(--surface-2) 25%, var(--border) 50%, var(--surface-2) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: var(--radius-sm);
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 64px; left: 0; right: 0;
+                background: var(--surface);
+                flex-direction: column;
+                padding: 1rem;
+                border-bottom: 1px solid var(--border);
+                box-shadow: var(--shadow-md);
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .course-header {
+                padding: 2rem 1rem;
+            }
+            .resource-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            .resource-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Auth View -->
-    <div id="auth-view">
-        <div class="auth-card">
-            <h2><span style="color: var(--secondary)">UIU</span> <span style="color: var(--primary)">Admin</span></h2>
-            <p id="auth-subtitle">Question Bank Approval Portal</p>
-            <form id="login-form">
-                <div class="form-group">
-                    <label>Admin Email (@uiu.ac.bd)</label>
-                    <input type="email" id="login-email" required placeholder="name@bscse.uiu.ac.bd">
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="login-password" required placeholder="••••••••">
-                </div>
-                <button type="submit" class="btn btn-primary" id="login-btn">
-                    <span>Sign In</span>
-                </button>
-            </form>
-            <div style="margin-top: 1rem; text-align: center;">
-                <button type="button" id="toggle-auth-mode" style="background:none; border:none; color:var(--primary); font-size:0.85rem; cursor:pointer; text-decoration:underline;">
-                    Need an admin account? Register here
-                </button>
-            </div>
-            <div id="auth-error" style="color: var(--danger); margin-top: 1rem; font-size: 0.85rem; display: none;"></div>
+    <!-- Topbar -->
+    <header class="topbar">
+        <a href="#dashboard" class="logo">
+            <div class="logo-mark">Q</div>
+            UIU Question Bank
+        </a>
+        <nav class="nav-links" id="navLinks">
+            <a href="#dashboard" class="nav-link active">Dashboard</a>
+            <a href="#courses" class="nav-link">Courses</a>
+            <a href="#upload" class="nav-link">Upload</a>
+            <a href="#favorites" class="nav-link">Favorites</a>
+        </nav>
+        <div style="display:flex; gap: 1rem; align-items: center;">
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">
+                <!-- Sun/Moon icon updated via JS -->
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            </button>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
         </div>
-    </div>
+    </header>
 
-    <!-- Main App Layout -->
-    <div id="app-layout">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="sidebar-brand">
-                <i class="fas fa-shield-halved"></i>
-                <span>QB Admin</span>
+    <!-- Main Content -->
+    <main class="main-content">
+        
+        <!-- Dashboard Page -->
+        <div id="page-dashboard" class="page active">
+            <section class="hero">
+                <h1>Find Study Materials Faster</h1>
+                <p class="text-muted">Search through thousands of past questions, solutions, and notes.</p>
+                <div class="search-container">
+                    <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" class="search-input" id="heroSearch" placeholder="Search by course code (e.g., CSE2215) or title..." autocomplete="off">
+                    <div class="autocomplete-dropdown" id="heroAutocomplete"></div>
+                </div>
+            </section>
+
+            <section class="stats-grid" id="dashboardStats">
+                <div class="stat-card">
+                    <div class="stat-number">...</div>
+                    <div class="text-muted">Courses</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">...</div>
+                    <div class="text-muted">Questions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">...</div>
+                    <div class="text-muted">Solutions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">...</div>
+                    <div class="text-muted">Notes</div>
+                </div>
+            </section>
+
+            <h3 class="section-title">Browse by Trimester</h3>
+            <div class="horizontal-scroll" id="trimesterList">
+                <!-- Populated via JS -->
             </div>
-            <nav class="sidebar-nav">
-                <a href="#dashboard" class="nav-item active" data-target="dashboard">
-                    <i class="fas fa-chart-line"></i> Dashboard
-                </a>
-                <a href="#queue" class="nav-item" data-target="queue">
-                    <i class="fas fa-list-check"></i> Review Queue
-                </a>
-                <a href="#audit" class="nav-item" data-target="audit">
-                    <i class="fas fa-history"></i> Audit Logs
-                </a>
-            </nav>
-            <div class="sidebar-footer">
-                <div class="admin-profile">
-                    <div class="admin-avatar" id="sidebar-avatar">A</div>
-                    <div class="admin-info">
-                        <span class="admin-name" id="sidebar-name">Admin User</span>
-                        <span class="admin-role">Super Admin</span>
-                    </div>
-                </div>
-                <button class="icon-btn" id="logout-btn" title="Logout">
-                    <i class="fas fa-sign-out-alt"></i>
-                </button>
+
+            <h3 class="section-title">Browse by Academic Semester</h3>
+            <div class="horizontal-scroll" id="semesterList">
+                <!-- Populated via JS -->
             </div>
-        </aside>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Header -->
-            <header class="header">
-                <h1 class="header-title" id="page-title">Dashboard</h1>
-                
-                <div class="header-actions">
-                    <div class="search-bar">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="global-search" placeholder="Search course, ID, topic...">
-                    </div>
-                    <button class="icon-btn" id="theme-toggle" title="Toggle Dark Mode">
-                        <i class="fas fa-moon"></i>
-                    </button>
-                </div>
-            </header>
+            <div id="recentCoursesSection" style="display:none; margin-bottom: 3rem;">
+                <h3 class="section-title">Continue Studying</h3>
+                <div class="course-grid" id="recentCoursesGrid"></div>
+            </div>
+            
+            <h3 class="section-title">Recently Added</h3>
+            <div class="resource-list" id="recentlyAddedList">
+                <!-- Populated via JS -->
+            </div>
+        </div>
 
-            <!-- Dashboard Page -->
-            <section class="page-content active" id="page-dashboard">
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--warning);">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <div class="stat-info">
-                            <div class="stat-value" id="stat-pending">0</div>
-                            <div class="stat-label">Pending Submissions</div>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success);">
-                            <i class="fas fa-check-circle"></i>
-                        </div>
-                        <div class="stat-info">
-                            <div class="stat-value" id="stat-approved">0</div>
-                            <div class="stat-label">Total Approved</div>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon" style="background: rgba(239, 68, 68, 0.1); color: var(--danger);">
-                            <i class="fas fa-times-circle"></i>
-                        </div>
-                        <div class="stat-info">
-                            <div class="stat-value" id="stat-rejected">0</div>
-                            <div class="stat-label">Total Rejected</div>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon" style="background: rgba(139, 92, 246, 0.1); color: #8b5cf6;">
-                            <i class="fas fa-edit"></i>
-                        </div>
-                        <div class="stat-info">
-                            <div class="stat-value" id="stat-revision">0</div>
-                            <div class="stat-label">Needs Revision</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Recent Pending Submissions</h3>
-                        <a href="#queue" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;" id="view-all-btn">View All</a>
-                    </div>
-                    <div class="table-responsive">
-                        <table id="dashboard-recent-table">
-                            <thead>
-                                <tr>
-                                    <th>Course</th>
-                                    <th>Topic / Term</th>
-                                    <th>Type</th>
-                                    <th>Date</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- JS Populated -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Review Queue Page -->
-            <section class="page-content" id="page-queue">
-                <div class="filters-bar">
-                    <select class="filter-select" id="filter-status">
-                        <option value="all">All Statuses</option>
-                        <option value="pending" selected>Pending</option>
-                        <option value="under_review">Under Review</option>
-                        <option value="approved">Approved</option>
-                        <option value="rejected">Rejected</option>
-                        <option value="needs_revision">Needs Revision</option>
+        <!-- Courses Page -->
+        <div id="page-courses" class="page">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+                <h2>All Courses</h2>
+                <div style="display:flex; gap: 1rem;">
+                    <input type="text" id="coursesSearch" class="input-control" placeholder="Search courses..." style="width:250px;">
+                    <select id="coursesTrimesterFilter" class="input-control" style="width: auto;">
+                        <option value="all">All Trimesters</option>
+                        <!-- Populated via JS -->
                     </select>
-                    <select class="filter-select" id="filter-type">
-                        <option value="all">All Types</option>
-                        <option value="question">Question Paper</option>
-                        <option value="note">Hand Note</option>
-                        <option value="solution">Solution</option>
-                    </select>
-                    <input type="text" class="filter-select" id="filter-search" placeholder="Search by course..." style="flex:1;">
                 </div>
+            </div>
+            <div class="course-grid" id="allCoursesGrid">
+                <!-- Populated via JS -->
+            </div>
+        </div>
+
+        <!-- Trimester Page -->
+        <div id="page-trimester" class="page">
+            <div style="margin-bottom: 2rem;">
+                <a href="#dashboard" class="text-muted" style="display:inline-flex; align-items:center; gap:0.5rem; margin-bottom: 1rem;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg> Back
+                </a>
+                <h2 id="trimesterTitle">Trimester</h2>
+            </div>
+            <div class="course-grid" id="trimesterGrid">
+                <!-- Populated via JS -->
+            </div>
+        </div>
+
+        <!-- Course Detail Page -->
+        <div id="page-course" class="page">
+            <a href="#courses" class="text-muted" style="display:inline-flex; align-items:center; gap:0.5rem; margin-bottom: 1rem;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg> Back
+            </a>
+            
+            <div class="course-header" id="courseHeaderInfo">
+                <!-- Populated via JS -->
+            </div>
+
+            <div style="display:flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+                <select id="courseSemesterFilter" class="input-control" style="width:200px;">
+                    <option value="all">All Semesters</option>
+                </select>
+                <select id="courseExamTypeFilter" class="input-control" style="width:200px;">
+                    <option value="all">All Exam Types</option>
+                    <option value="Midterm">Midterm</option>
+                    <option value="Final">Final</option>
+                    <option value="Quiz">Quiz</option>
+                    <option value="Assignment">Assignment</option>
+                    <option value="Lab">Lab</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div id="courseResourcesContainer">
+                <!-- Populated via JS -->
+            </div>
+        </div>
+
+        <!-- Upload Page -->
+        <div id="page-upload" class="page">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h2>Contribute Material</h2>
+                <p class="text-muted">Help your peers by sharing past questions, solutions, or notes.</p>
+            </div>
+            
+            <div class="upload-stepper">
+                <div class="step-indicator">
+                    <div class="step-dot active" data-step="1">1</div>
+                    <div class="step-dot" data-step="2">2</div>
+                    <div class="step-dot" data-step="3">3</div>
+                </div>
+
+                <form id="uploadForm">
+                    <!-- Step 1: Course Info -->
+                    <div class="form-step active" id="step1">
+                        <h3>Course Information</h3>
+                        <div class="input-group">
+                            <label class="input-label">Trimester</label>
+                            <select id="upTrimester" class="input-control" required></select>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Course</label>
+                            <select id="upCourse" class="input-control" required disabled>
+                                <option value="">Select Trimester first</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Academic Semester</label>
+                            <select id="upSemester" class="input-control" required></select>
+                        </div>
+                        <div style="text-align: right;">
+                            <button type="button" class="btn btn-primary" onclick="nextStep(2)">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Material Details -->
+                    <div class="form-step" id="step2">
+                        <h3>Material Details</h3>
+                        <div class="input-group">
+                            <label class="input-label">Material Type</label>
+                            <div style="display:flex; gap:1rem;">
+                                <label><input type="radio" name="materialType" value="Question" checked> Question</label>
+                                <label><input type="radio" name="materialType" value="Notes"> Notes</label>
+                                <label><input type="radio" name="materialType" value="Lab"> Lab</label>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group" id="examTypeGroup">
+                            <label class="input-label">Exam Type</label>
+                            <select id="upExamType" class="input-control">
+                                <option value="Midterm">Midterm</option>
+                                <option value="Final">Final</option>
+                                <option value="Quiz">Quiz</option>
+                                <option value="Assignment">Assignment</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label" id="upTopicLabel">Topic / Title <span style="color:var(--text-muted);font-weight:400">(Optional for Questions)</span></label>
+                            <input type="text" id="upTopic" class="input-control" placeholder="e.g. Chapter 3 Summary">
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between;">
+                            <button type="button" class="btn btn-outline" onclick="nextStep(1)">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(3)">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Files & Submit -->
+                    <div class="form-step" id="step3">
+                        <h3>Upload Files</h3>
+                        
+                        <div class="input-group">
+                            <label class="input-label">Main File (PDF/Image)</label>
+                            <input type="file" id="upMainFile" class="input-control" accept=".pdf,.png,.jpg,.jpeg" required>
+                        </div>
+                        
+                        <div class="input-group" id="solutionFileGroup">
+                            <label class="input-label">Solution File (Optional)</label>
+                            <input type="file" id="upSolutionFile" class="input-control" accept=".pdf,.png,.jpg,.jpeg">
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">Your Name</label>
+                            <input type="text" id="upSubmitterName" class="input-control" required>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">UIU Email</label>
+                            <input type="email" id="upSubmitterEmail" class="input-control" placeholder="student@uiu.ac.bd" required pattern=".*@.*uiu\.ac\.bd$">
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between;">
+                            <button type="button" class="btn btn-outline" onclick="nextStep(2)">Back</button>
+                            <button type="submit" class="btn btn-primary" id="submitUploadBtn">Submit Material</button>
+                        </div>
+                        <div id="uploadStatus" style="margin-top: 1rem; text-align:center;"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Favorites Page -->
+        <div id="page-favorites" class="page">
+            <h2>Your Favorites</h2>
+            <div id="favoritesContent">
+                <h3 class="section-title">Courses</h3>
+                <div class="course-grid" id="favCoursesGrid"></div>
                 
-                <div class="card">
-                    <div class="table-responsive">
-                        <table id="queue-table">
-                            <thead>
-                                <tr>
-                                    <th>Course</th>
-                                    <th>Trimester & Semester</th>
-                                    <th>Topic / Title</th>
-                                    <th>Type</th>
-                                    <th>Submitter</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- JS Populated -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
+                <h3 class="section-title" style="margin-top: 3rem;">Saved Resources</h3>
+                <div class="resource-list" id="favResourcesList"></div>
+            </div>
+        </div>
 
-            <!-- Audit Log Page -->
-            <section class="page-content" id="page-audit">
-                <div class="card">
-                    <div class="table-responsive">
-                        <table id="audit-table">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Admin</th>
-                                    <th>Action</th>
-                                    <th>Target Document</th>
-                                    <th>Notes</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- JS Populated -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-        </main>
-    </div>
+    </main>
 
-    <!-- Review Modal -->
-    <div class="modal-overlay" id="reviewModal">
-        <div class="modal-container">
+    <!-- PDF Viewer Modal -->
+    <div class="modal-overlay" id="pdfModal">
+        <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Review Submission</h3>
-                <button class="icon-btn close-modal"><i class="fas fa-times"></i></button>
+                <h3 id="pdfModalTitle" style="margin:0;">Document Viewer</h3>
+                <div style="display:flex; gap:0.5rem;">
+                    <a id="pdfModalDownload" href="#" target="_blank" class="btn btn-outline" style="padding: 0.5rem;">Download</a>
+                    <button class="btn btn-outline" style="padding: 0.5rem;" onclick="closePdfViewer()">Close</button>
+                </div>
             </div>
             <div class="modal-body">
-                <div class="modal-preview">
-                    <div class="preview-tabs">
-                        <div class="preview-tab active" data-target="main-file">Main File</div>
-                        <div class="preview-tab" data-target="solution-file" id="tab-solution" style="display:none;">Solution File</div>
-                    </div>
-                    <div class="preview-content" id="preview-container">
-                        <!-- Iframe or Img injected here -->
-                    </div>
-                </div>
-                <div class="modal-details">
-                    <div class="detail-group">
-                        <h4>Course</h4>
-                        <p id="modal-course">CSE 1110 - Introduction to Computer Systems</p>
-                    </div>
-                    <div class="detail-group">
-                        <h4>Academic Semester & Trimester</h4>
-                        <p id="modal-semester">Spring 2024 (Trimester 1)</p>
-                    </div>
-                    <div class="detail-group">
-                        <h4>Material Details</h4>
-                        <p id="modal-type">Midterm Question Paper</p>
-                    </div>
-                    <div class="detail-group">
-                        <h4>Topic / Title</h4>
-                        <p id="modal-topic">Midterm Question Fall 23</p>
-                    </div>
-                    <div class="detail-group">
-                        <h4>Submitter Info</h4>
-                        <p id="modal-submitter">student@bscse.uiu.ac.bd</p>
-                    </div>
-                    <div class="detail-group">
-                        <h4>Submitted On</h4>
-                        <p id="modal-date">Oct 24, 2024</p>
-                    </div>
-                    
-                    <div class="action-bar">
-                        <div class="form-group">
-                            <label>Admin Comments / Revision Reason</label>
-                            <textarea id="modal-comment" rows="3" placeholder="Explain why it's rejected or needs revision..."></textarea>
-                        </div>
-                        <div class="action-buttons">
-                            <button class="btn btn-success" id="btn-approve"><i class="fas fa-check"></i> Approve</button>
-                            <button class="btn btn-danger" id="btn-reject"><i class="fas fa-times"></i> Reject</button>
-                            <button class="btn btn-warning" id="btn-revision" style="grid-column: span 2;"><i class="fas fa-edit"></i> Request Revision</button>
-                        </div>
-                    </div>
-                </div>
+                <iframe id="pdfModalIframe" src=""></iframe>
             </div>
         </div>
     </div>
@@ -977,12 +1031,12 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <script type="module">
+        // ==========================================
+        // FIREBASE CONFIG & IMPORTS (EXACTLY AS REQUESTED)
+        // ==========================================
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
         import {
-            getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut
-        } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
-        import {
-            getFirestore, collection, doc, query, where, onSnapshot, getDocs, getDoc, updateDoc, addDoc, setDoc, serverTimestamp, deleteDoc, orderBy
+            addDoc, collection, getFirestore, onSnapshot, query, serverTimestamp, where
         } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js';
 
         const firebaseConfig = {
@@ -995,14 +1049,13 @@
             appId: '1:643628466748:web:84d4392faf2466654db939',
             measurementId: 'G-3BW6M1SXLP'
         };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        
         const QUESTION_COLLECTION = 'questionPapers';
-        const AUDIT_COLLECTION = 'auditLogs';
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
+        // ==========================================
+        // DATA CONSTANTS
+        // ==========================================
         const CURRICULUM = [
             { code: 'CSE 1110', title: 'Introduction to Computer Systems', credits: 3, trimester: 1, aliases: ['ICS'] },
             { code: 'ENG 1011', title: 'English I', credits: 3, trimester: 1, aliases: [] },
@@ -1067,488 +1120,805 @@
             { code: 'CSE 4559', title: 'Computer Graphics', credits: 3, trimester: 0, aliases: ['CG'] },
             { code: 'CSE 4561', title: 'Robotics', credits: 3, trimester: 0, aliases: [] },
             { code: 'BIO 1101', title: 'Biology for Engineers', credits: 3, trimester: 0, aliases: [] },
-            { code: 'GED 2012', title: 'Bangladesh Studies', credits: 3, trimester: 0, aliases: [] }
+            { code: 'GED 2012', title: 'Bangladesh Studies', credits: 3, trimester: 0, aliases: [] },
         ];
 
-        let currentUser = null;
-        let allSubmissions = [];
-        let unsubscribeSubmissions = null;
-        let currentReviewDoc = null;
+        function decodeSemester(code) {
+            const str = String(code);
+            const yearPart = parseInt(str.slice(0, -1));
+            const seasonPart = parseInt(str.slice(-1));
+            const year = 2000 + yearPart;
+            const seasons = { 1: 'Spring', 2: 'Summer', 3: 'Fall' };
+            return { year, season: seasons[seasonPart] || '?', label: `${seasons[seasonPart] || '?'} ${year}` };
+        }
+        function generateSemesters() {
+            const semesters = [];
+            for (let y = 21; y <= 27; y++) {
+                for (let s = 1; s <= 3; s++) {
+                    semesters.push({ code: `${y}${s}`, ...decodeSemester(`${y}${s}`) });
+                }
+            }
+            return semesters.reverse(); // Newest first
+        }
+        const SEMESTERS = generateSemesters();
 
-        // UI Helpers
-        const showToast = (message, type = 'info') => {
+        // ==========================================
+        // STATE & HELPERS
+        // ==========================================
+        let approvedPapers = [];
+        let currentRoute = { page: 'dashboard', param: null };
+
+        function getFavorites() { return JSON.parse(localStorage.getItem('qb_favorites') || '{"courses":[],"resources":[]}'); }
+        function saveFavorites(fav) { localStorage.setItem('qb_favorites', JSON.stringify(fav)); }
+        function toggleFavoriteCourse(code) {
+            const fav = getFavorites();
+            if (fav.courses.includes(code)) fav.courses = fav.courses.filter(c => c !== code);
+            else fav.courses.push(code);
+            saveFavorites(fav);
+            renderCurrentPage();
+        }
+        function toggleFavoriteResource(id) {
+            const fav = getFavorites();
+            if (fav.resources.includes(id)) fav.resources = fav.resources.filter(r => r !== id);
+            else fav.resources.push(id);
+            saveFavorites(fav);
+            renderCurrentPage();
+        }
+        function isFavoriteCourse(code) { return getFavorites().courses.includes(code); }
+        function isFavoriteResource(id) { return getFavorites().resources.includes(id); }
+
+        function addToRecentCourses(code) {
+            let recent = JSON.parse(localStorage.getItem('qb_recent') || '[]');
+            recent = [code, ...recent.filter(c => c !== code)].slice(0, 5);
+            localStorage.setItem('qb_recent', JSON.stringify(recent));
+        }
+        function getRecentCourses() { return JSON.parse(localStorage.getItem('qb_recent') || '[]'); }
+
+        function getAssets(paper) {
+            const modernAssets = Array.isArray(paper.materialAssets)
+                ? paper.materialAssets.map(a => ({
+                    assetType: (a.assetType || a.type || 'question').toLowerCase(),
+                    pdfUrl: a.pdfUrl || a.secure_url || a.secureUrl || '',
+                    originalFilename: a.originalFilename || a.original_filename || '',
+                    topic: a.topic || paper.topic || ''
+                }))
+                : [];
+            const legacyAssets = [
+                paper.cloudinaryPublicId || paper.pdfUrl ? { assetType: 'question', pdfUrl: paper.pdfUrl || paper.fileUrl || '', originalFilename: paper.originalFilename || '', topic: paper.topic || '' } : null,
+                paper.solutionCloudinaryPublicId || paper.solutionPdfUrl || paper.solutionUrl ? { assetType: 'solution', pdfUrl: paper.solutionPdfUrl || paper.solutionUrl || '', originalFilename: paper.solutionOriginalFilename || '', topic: paper.topic || '' } : null,
+                paper.noteCloudinaryPublicId || paper.notePdfUrl ? { assetType: 'note', pdfUrl: paper.notePdfUrl || '', originalFilename: paper.noteOriginalFilename || '', topic: paper.topic || '' } : null
+            ].filter(Boolean);
+            const seen = new Set();
+            return [...modernAssets, ...legacyAssets].filter(a => {
+                const key = a.pdfUrl || `${a.assetType}:${a.topic}`;
+                if (!key || seen.has(key)) return false;
+                seen.add(key);
+                return true;
+            });
+        }
+
+        function getMaterialType(paper) {
+            if (paper.materialGroup === 'notes' || paper.type === 'Notes') return 'note';
+            if (paper.type === 'Lab') return 'lab';
+            const assets = getAssets(paper);
+            if (assets.some(a => a.assetType === 'note')) return 'note';
+            return 'question';
+        }
+
+        function getCourseStats(code) {
+            const papers = approvedPapers.filter(p => (p.courseCode || '').replace(/\s+/g,'').toLowerCase() === code.replace(/\s+/g,'').toLowerCase());
+            let questions = 0, solutions = 0, notes = 0, labs = 0;
+            papers.forEach(p => {
+                const assets = getAssets(p);
+                assets.forEach(a => {
+                    if (a.assetType === 'question') questions++;
+                    else if (a.assetType === 'solution') solutions++;
+                    else if (a.assetType === 'note') notes++;
+                });
+                if (p.type === 'Lab') labs++;
+            });
+            return { questions, solutions, notes, labs };
+        }
+
+        window.toggleFavoriteCourse = toggleFavoriteCourse;
+        window.toggleFavoriteResource = toggleFavoriteResource;
+
+        function showToast(message, type='info') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
-            
-            let icon = 'fa-info-circle';
-            if(type === 'success') icon = 'fa-check-circle';
-            if(type === 'error') icon = 'fa-times-circle';
-            if(type === 'warning') icon = 'fa-exclamation-triangle';
-            
-            toast.innerHTML = `<i class="fas ${icon}"></i><span>${message}</span>`;
+            toast.innerHTML = `<span>${message}</span><button onclick="this.parentElement.remove()" style="color:inherit">&times;</button>`;
             container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // ==========================================
+        // ROUTER & NAVIGATION
+        // ==========================================
+        function parseHash() {
+            const hash = location.hash.slice(1) || 'dashboard';
+            const parts = hash.split('/');
+            return { page: parts[0], param: parts[1] || null };
+        }
+
+        function handleRouteChange() {
+            currentRoute = parseHash();
             
-            setTimeout(() => toast.classList.add('show'), 10);
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        };
-
-        const getCourseTitle = (code) => {
-            const course = CURRICULUM.find(c => c.code === code);
-            return course ? course.title : 'Unknown Course';
-        };
-
-        const decodeSemester = (semCode) => {
-            if(!semCode || semCode.length !== 3) return 'Unknown';
-            const yearStr = semCode.substring(0, 2);
-            const termStr = semCode.substring(2);
-            const year = '20' + yearStr;
-            let term = '';
-            if(termStr === '1') term = 'Spring';
-            else if(termStr === '2') term = 'Summer';
-            else if(termStr === '3') term = 'Fall';
-            return `${term} ${year}`;
-        };
-
-        const formatDate = (timestamp) => {
-            if(!timestamp) return 'N/A';
-            const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-            return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-        };
-
-        const getBadgeClass = (status) => {
-            switch(status) {
-                case 'approved': return 'badge-approved';
-                case 'rejected': return 'badge-rejected';
-                case 'needs_revision': return 'badge-revision';
-                case 'under_review': return 'badge-review';
-                default: return 'badge-pending';
-            }
-        };
-
-        const capitalize = (s) => s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
-
-        // Auth
-        let isRegisterMode = false;
-        const toggleAuthBtn = document.getElementById('toggle-auth-mode');
-        const loginBtn = document.getElementById('login-btn');
-        const authSubtitle = document.getElementById('auth-subtitle');
-
-        toggleAuthBtn.addEventListener('click', () => {
-            isRegisterMode = !isRegisterMode;
-            if (isRegisterMode) {
-                loginBtn.querySelector('span').textContent = 'Create Admin Account';
-                authSubtitle.textContent = 'Register New Admin Account';
-                toggleAuthBtn.textContent = 'Already have an account? Sign in here';
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            
+            // Show current page
+            const pageEl = document.getElementById(`page-${currentRoute.page}`);
+            if (pageEl) {
+                pageEl.classList.add('active');
             } else {
-                loginBtn.querySelector('span').textContent = 'Sign In';
-                authSubtitle.textContent = 'Question Bank Approval Portal';
-                toggleAuthBtn.textContent = 'Need an admin account? Register here';
-            }
-            document.getElementById('auth-error').style.display = 'none';
-        });
-
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                if (user.email && user.email.toLowerCase().includes('uiu.ac.bd')) {
-                    currentUser = user;
-                    
-                    // Create or update admin record in Firestore
-                    try {
-                        await setDoc(doc(db, 'admins', user.uid), {
-                            email: user.email.toLowerCase(),
-                            role: 'admin',
-                            lastLogin: serverTimestamp()
-                        }, { merge: true });
-                    } catch (e) {
-                        console.warn('Admin doc creation error:', e);
-                    }
-
-                    document.getElementById('auth-view').style.display = 'none';
-                    document.getElementById('app-layout').style.display = 'flex';
-                    document.getElementById('sidebar-name').textContent = user.email.split('@')[0];
-                    document.getElementById('sidebar-avatar').textContent = user.email.charAt(0).toUpperCase();
-                    initApp();
-                } else {
-                    document.getElementById('auth-error').textContent = 'Unauthorized. Use a valid @uiu.ac.bd admin email.';
-                    document.getElementById('auth-error').style.display = 'block';
-                    signOut(auth);
-                }
-            } else {
-                document.getElementById('auth-view').style.display = 'flex';
-                document.getElementById('app-layout').style.display = 'none';
-                if(unsubscribeSubmissions) unsubscribeSubmissions();
-            }
-        });
-
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('login-email').value.trim();
-            const pass = document.getElementById('login-password').value;
-            const btn = document.getElementById('login-btn');
-            document.getElementById('auth-error').style.display = 'none';
-
-            if (!email.toLowerCase().includes('uiu.ac.bd')) {
-                document.getElementById('auth-error').textContent = 'Email must end with @uiu.ac.bd or @bscse.uiu.ac.bd';
-                document.getElementById('auth-error').style.display = 'block';
-                return;
+                document.getElementById('page-dashboard').classList.add('active');
             }
 
-            btn.innerHTML = '<div class="loader"></div>';
-            try {
-                if (isRegisterMode) {
-                    const cred = await createUserWithEmailAndPassword(auth, email, pass);
-                    await setDoc(doc(db, 'admins', cred.user.uid), {
-                        email: email.toLowerCase(),
-                        role: 'admin',
-                        createdAt: serverTimestamp()
-                    });
-                } else {
-                    await signInWithEmailAndPassword(auth, email, pass);
-                }
-            } catch (err) {
-                console.error(err);
-                let msg = err.message;
-                if (err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential') {
-                    msg = 'Account not found or password incorrect. If you haven\'t created an account yet, click "Need an admin account? Register here".';
-                }
-                document.getElementById('auth-error').textContent = msg;
-                document.getElementById('auth-error').style.display = 'block';
-            } finally {
-                btn.innerHTML = `<span>${isRegisterMode ? 'Create Admin Account' : 'Sign In'}</span>`;
-            }
-        });
-
-        document.getElementById('logout-btn').addEventListener('click', () => {
-            signOut(auth);
-        });
-
-        // App Initialization
-        const initApp = () => {
-            setupNavigation();
-            setupTheme();
-            fetchSubmissions();
-            fetchAuditLogs();
-        };
-
-        // Navigation
-        const setupNavigation = () => {
-            const navItems = document.querySelectorAll('.nav-item');
-            const pages = document.querySelectorAll('.page-content');
-            
-            navItems.forEach(item => {
-                item.addEventListener('click', (e) => {
-                    const targetId = item.getAttribute('data-target');
-                    if(!targetId) return;
-                    
-                    navItems.forEach(n => n.classList.remove('active'));
-                    item.classList.add('active');
-                    
-                    pages.forEach(p => p.classList.remove('active'));
-                    document.getElementById(`page-${targetId}`).classList.add('active');
-                    
-                    document.getElementById('page-title').textContent = item.textContent.trim();
-                });
+            // Update nav active states
+            document.querySelectorAll('.nav-link').forEach(link => {
+                const linkPage = link.getAttribute('href').slice(1);
+                if (linkPage === currentRoute.page) link.classList.add('active');
+                else link.classList.remove('active');
             });
 
-            document.getElementById('view-all-btn').addEventListener('click', () => {
-                document.querySelector('.nav-item[data-target="queue"]').click();
-            });
-        };
+            // Mobile menu close
+            document.getElementById('navLinks').classList.remove('active');
 
-        // Theme
-        const setupTheme = () => {
-            const btn = document.getElementById('theme-toggle');
-            const currentTheme = localStorage.getItem('theme') || 'light';
-            if (currentTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
-            
-            btn.addEventListener('click', () => {
-                const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-                document.documentElement.setAttribute('data-theme', theme);
-                localStorage.setItem('theme', theme);
-            });
-        };
+            window.scrollTo(0, 0);
+            renderCurrentPage();
+        }
 
-        // Data Fetching
-        const fetchSubmissions = () => {
-            const q = query(collection(db, QUESTION_COLLECTION), orderBy('createdAt', 'desc'));
-            unsubscribeSubmissions = onSnapshot(q, (snapshot) => {
-                allSubmissions = [];
-                let pendingCount = 0;
-                let approvedCount = 0;
-                let rejectedCount = 0;
-                let revisionCount = 0;
+        window.addEventListener('hashchange', handleRouteChange);
 
+        // ==========================================
+        // THEME
+        // ==========================================
+        function initTheme() {
+            const savedTheme = localStorage.getItem('qb_theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('qb_theme', next);
+        });
+
+        // ==========================================
+        // FIREBASE LISTENER
+        // ==========================================
+        function listenForApprovedPapers() {
+            const qRef = query(collection(db, QUESTION_COLLECTION), where('status', '==', 'approved'));
+            onSnapshot(qRef, (snapshot) => {
+                approvedPapers = [];
                 snapshot.forEach(doc => {
-                    const data = doc.data();
-                    data.id = doc.id;
-                    allSubmissions.push(data);
-                    
-                    if(data.status === 'pending' || !data.status) pendingCount++;
-                    if(data.status === 'approved') approvedCount++;
-                    if(data.status === 'rejected') rejectedCount++;
-                    if(data.status === 'needs_revision') revisionCount++;
+                    approvedPapers.push({ id: doc.id, ...doc.data() });
                 });
-
-                document.getElementById('stat-pending').textContent = pendingCount;
-                document.getElementById('stat-approved').textContent = approvedCount;
-                document.getElementById('stat-rejected').textContent = rejectedCount;
-                document.getElementById('stat-revision').textContent = revisionCount;
-
-                renderDashboardRecent();
-                renderQueueTable();
-            });
-        };
-
-        const fetchAuditLogs = async () => {
-            const q = query(collection(db, AUDIT_COLLECTION), orderBy('timestamp', 'desc'));
-            onSnapshot(q, (snapshot) => {
-                const tbody = document.querySelector('#audit-table tbody');
-                tbody.innerHTML = '';
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>${formatDate(data.timestamp)}</td>
-                        <td>${data.adminEmail}</td>
-                        <td><span class="badge ${data.action === 'APPROVE' ? 'badge-approved' : data.action === 'REJECT' ? 'badge-rejected' : 'badge-revision'}">${data.action}</span></td>
-                        <td>${data.targetCourse || data.targetId}</td>
-                        <td>${data.notes || '-'}</td>
-                    `;
-                    tbody.appendChild(tr);
+                // Sort by timestamp desc
+                approvedPapers.sort((a, b) => {
+                    const timeA = a.submittedAt ? a.submittedAt.toMillis() : 0;
+                    const timeB = b.submittedAt ? b.submittedAt.toMillis() : 0;
+                    return timeB - timeA;
                 });
+                renderCurrentPage();
             });
-        };
+        }
 
-        // Rendering
-        const renderDashboardRecent = () => {
-            const tbody = document.querySelector('#dashboard-recent-table tbody');
-            tbody.innerHTML = '';
+        // ==========================================
+        // RENDERING LOGIC
+        // ==========================================
+        function renderCurrentPage() {
+            if (currentRoute.page === 'dashboard') renderDashboard();
+            else if (currentRoute.page === 'courses') renderCoursesPage();
+            else if (currentRoute.page === 'course') renderCourseDetail(currentRoute.param);
+            else if (currentRoute.page === 'trimester') renderTrimesterPage(currentRoute.param);
+            else if (currentRoute.page === 'favorites') renderFavoritesPage();
+            else if (currentRoute.page === 'upload') populateUploadForm();
+        }
+
+        function createCourseCard(course) {
+            const stats = getCourseStats(course.code);
+            const isFav = isFavoriteCourse(course.code);
+            const cleanCode = course.code.replace(/\s+/g,'');
+            return `
+                <div class="card course-card">
+                    <button class="fav-btn ${isFav ? 'active' : ''}" onclick="event.preventDefault(); toggleFavoriteCourse('${course.code}')" aria-label="Favorite">
+                        ♥
+                    </button>
+                    <a href="#course/${cleanCode}" style="display:block; flex:1">
+                        <span class="pill primary" style="margin-bottom:0.5rem;">${course.code}</span>
+                        <h3>${course.title}</h3>
+                        <p class="text-muted" style="font-size:0.875rem;">
+                            ${course.trimester === 0 ? 'Elective' : `Trimester ${course.trimester}`} • ${course.credits} Credits
+                        </p>
+                        <div class="course-stats">
+                            <span title="Questions"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> ${stats.questions}</span>
+                            <span title="Solutions"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> ${stats.solutions}</span>
+                            <span title="Notes"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg> ${stats.notes}</span>
+                        </div>
+                    </a>
+                </div>
+            `;
+        }
+
+        function createResourceCard(paper) {
+            const isFav = isFavoriteResource(paper.id);
+            const semLabel = paper.semester ? decodeSemester(paper.semester).label : '';
+            const type = paper.type || 'Question';
+            let examLabel = paper.examType || '';
+            if (type !== 'Question') examLabel = '';
+
+            let downloadLinks = '';
+            if (paper.fileUrl) downloadLinks += `<button class="btn btn-outline" onclick="openPdfViewer('${paper.fileUrl}', '${paper.courseCode} - ${type}')" style="padding:0.5rem 1rem; font-size:0.875rem;">View File</button>`;
+            if (paper.solutionUrl) downloadLinks += `<button class="btn btn-primary" onclick="openPdfViewer('${paper.solutionUrl}', '${paper.courseCode} - Solution')" style="padding:0.5rem 1rem; font-size:0.875rem;">View Solution</button>`;
+
+            const topicStr = paper.topic ? `<div style="font-weight:500;">${paper.topic}</div>` : '';
             
-            const recent = allSubmissions.filter(s => s.status === 'pending' || !s.status).slice(0, 5);
-            
-            if(recent.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">No pending submissions</td></tr>';
-                return;
-            }
-
-            recent.forEach(sub => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><strong>${sub.courseCode}</strong><br><small style="color:var(--text-muted);">${getCourseTitle(sub.courseCode)}</small></td>
-                    <td>${sub.topic || sub.examType}<br><small style="color:var(--text-muted);">${decodeSemester(sub.semester)}</small></td>
-                    <td>${capitalize(sub.materialType)}</td>
-                    <td>${formatDate(sub.createdAt)}</td>
-                    <td><button class="btn btn-outline btn-review" data-id="${sub.id}" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;">Review</button></td>
-                `;
-                tbody.appendChild(tr);
-            });
-            attachReviewListeners();
-        };
-
-        const renderQueueTable = () => {
-            const tbody = document.querySelector('#queue-table tbody');
-            tbody.innerHTML = '';
-            
-            const filterStatus = document.getElementById('filter-status').value;
-            const filterType = document.getElementById('filter-type').value;
-            const filterSearch = document.getElementById('filter-search').value.toLowerCase();
-
-            let filtered = allSubmissions.filter(sub => {
-                let match = true;
-                const status = sub.status || 'pending';
-                if(filterStatus !== 'all' && status !== filterStatus) match = false;
-                if(filterType !== 'all' && sub.materialType !== filterType) match = false;
-                if(filterSearch) {
-                    const searchStr = `${sub.courseCode} ${getCourseTitle(sub.courseCode)} ${sub.topic} ${sub.submitterEmail}`.toLowerCase();
-                    if(!searchStr.includes(filterSearch)) match = false;
-                }
-                return match;
-            });
-
-            if(filtered.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--text-muted); padding: 2rem;">No submissions found matching criteria</td></tr>';
-                return;
-            }
-
-            filtered.forEach(sub => {
-                const tr = document.createElement('tr');
-                const status = sub.status || 'pending';
-                tr.innerHTML = `
-                    <td><strong>${sub.courseCode}</strong></td>
-                    <td>${sub.trimester ? 'T' + sub.trimester : '-'} | ${decodeSemester(sub.semester)}</td>
-                    <td>${sub.topic || '-'}</td>
-                    <td>${capitalize(sub.materialType)}</td>
-                    <td>${sub.submitterEmail || 'Anonymous'}</td>
-                    <td><span class="badge ${getBadgeClass(status)}">${capitalize(status.replace('_', ' '))}</span></td>
-                    <td>
-                        <button class="btn btn-outline btn-review" data-id="${sub.id}" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;">
-                            ${status === 'pending' ? 'Review' : 'View'}
+            return `
+                <div class="resource-card">
+                    <div class="resource-info">
+                        <div style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+                            <span class="pill primary">${paper.courseCode}</span>
+                            <span class="pill">${type}</span>
+                            ${examLabel ? `<span class="pill">${examLabel}</span>` : ''}
+                            ${semLabel ? `<span class="pill">${semLabel}</span>` : ''}
+                        </div>
+                        ${topicStr}
+                        <div class="resource-meta">
+                            <span>By ${paper.submitterName || 'Anonymous'}</span>
+                        </div>
+                    </div>
+                    <div class="resource-actions">
+                        ${downloadLinks}
+                        <button class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFavoriteResource('${paper.id}')" aria-label="Favorite" style="padding:0.5rem; border-radius:50%; border:1px solid var(--border); background:transparent; color: ${isFav ? 'var(--error)' : 'var(--text-muted)'}">
+                            ♥
                         </button>
-                    </td>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderDashboard() {
+            // Stats
+            const cards = document.querySelectorAll('.stat-number');
+            cards[0].innerText = CURRICULUM.length;
+            cards[1].innerText = approvedPapers.filter(p => p.type === 'Question' || !p.type).length;
+            cards[2].innerText = approvedPapers.filter(p => p.solutionUrl).length;
+            cards[3].innerText = approvedPapers.filter(p => p.type === 'Notes').length;
+
+            // Trimesters
+            const trimCont = document.getElementById('trimesterList');
+            trimCont.innerHTML = '';
+            for (let i = 1; i <= 12; i++) {
+                const count = CURRICULUM.filter(c => c.trimester === i).length;
+                trimCont.innerHTML += `
+                    <a href="#trimester/${i}" class="trimester-card">
+                        <h3>Trim ${i}</h3>
+                        <p class="text-muted" style="font-size:0.875rem;">${count} Courses</p>
+                    </a>
                 `;
-                tbody.appendChild(tr);
-            });
-            attachReviewListeners();
-        };
+            }
+            const elecCount = CURRICULUM.filter(c => c.trimester === 0).length;
+            trimCont.innerHTML += `<a href="#trimester/0" class="trimester-card"><h3>Electives</h3><p class="text-muted" style="font-size:0.875rem;">${elecCount} Courses</p></a>`;
 
-        document.getElementById('filter-status').addEventListener('change', renderQueueTable);
-        document.getElementById('filter-type').addEventListener('change', renderQueueTable);
-        document.getElementById('filter-search').addEventListener('input', renderQueueTable);
+            // Semesters
+            const semCont = document.getElementById('semesterList');
+            semCont.innerHTML = SEMESTERS.map(s => `<a href="#courses?sem=${s.code}" class="semester-pill">${s.label}</a>`).join('');
 
-        // Modal Logic
-        const attachReviewListeners = () => {
-            document.querySelectorAll('.btn-review').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const id = e.target.closest('.btn-review').getAttribute('data-id');
-                    openReviewModal(id);
-                });
-            });
-        };
-
-        const openReviewModal = (id) => {
-            const sub = allSubmissions.find(s => s.id === id);
-            if(!sub) return;
-            currentReviewDoc = sub;
-
-            document.getElementById('modal-course').textContent = `${sub.courseCode} - ${getCourseTitle(sub.courseCode)}`;
-            document.getElementById('modal-semester').textContent = `${decodeSemester(sub.semester)} ${sub.trimester ? '(Trimester '+sub.trimester+')' : ''}`;
-            document.getElementById('modal-type').textContent = `${capitalize(sub.materialType)} ${sub.examType ? '- ' + capitalize(sub.examType) : ''}`;
-            document.getElementById('modal-topic').textContent = sub.topic || 'N/A';
-            document.getElementById('modal-submitter').textContent = sub.submitterEmail || 'N/A';
-            document.getElementById('modal-date').textContent = formatDate(sub.createdAt);
-            document.getElementById('modal-comment').value = sub.adminComment || '';
-
-            // Setup preview
-            const previewContainer = document.getElementById('preview-container');
-            const fileUrl = sub.fileUrl;
-            if(fileUrl) {
-                if(fileUrl.toLowerCase().endsWith('.pdf')) {
-                    previewContainer.innerHTML = `<iframe src="${fileUrl}"></iframe>`;
-                } else {
-                    previewContainer.innerHTML = `<img src="${fileUrl}" alt="Preview">`;
-                }
+            // Recent Courses
+            const recent = getRecentCourses();
+            if (recent.length > 0) {
+                document.getElementById('recentCoursesSection').style.display = 'block';
+                const grid = document.getElementById('recentCoursesGrid');
+                grid.innerHTML = recent.map(code => {
+                    const c = CURRICULUM.find(x => x.code.replace(/\s+/g,'').toLowerCase() === code.toLowerCase());
+                    return c ? createCourseCard(c) : '';
+                }).join('');
             } else {
-                previewContainer.innerHTML = '<p>No file attached</p>';
+                document.getElementById('recentCoursesSection').style.display = 'none';
             }
 
-            const tabSol = document.getElementById('tab-solution');
-            if(sub.solutionUrl) {
-                tabSol.style.display = 'block';
-                tabSol.onclick = () => {
-                    document.querySelectorAll('.preview-tab').forEach(t=>t.classList.remove('active'));
-                    tabSol.classList.add('active');
-                    if(sub.solutionUrl.toLowerCase().endsWith('.pdf')) {
-                        previewContainer.innerHTML = `<iframe src="${sub.solutionUrl}"></iframe>`;
-                    } else {
-                        previewContainer.innerHTML = `<img src="${sub.solutionUrl}" alt="Solution Preview">`;
-                    }
-                };
-            } else {
-                tabSol.style.display = 'none';
-            }
+            // Recently Added
+            const recentList = document.getElementById('recentlyAddedList');
+            recentList.innerHTML = approvedPapers.slice(0, 8).map(p => createResourceCard(p)).join('');
+        }
 
-            const tabMain = document.querySelector('.preview-tab[data-target="main-file"]');
-            tabMain.onclick = () => {
-                document.querySelectorAll('.preview-tab').forEach(t=>t.classList.remove('active'));
-                tabMain.classList.add('active');
-                if(fileUrl && fileUrl.toLowerCase().endsWith('.pdf')) {
-                    previewContainer.innerHTML = `<iframe src="${fileUrl}"></iframe>`;
-                } else if(fileUrl) {
-                    previewContainer.innerHTML = `<img src="${fileUrl}" alt="Preview">`;
-                }
-            };
-            tabMain.click();
-
-            // Status overrides for buttons
-            const isProcessed = sub.status === 'approved' || sub.status === 'rejected';
-            document.getElementById('btn-approve').disabled = isProcessed;
-            document.getElementById('btn-reject').disabled = isProcessed;
+        function renderCoursesPage() {
+            const grid = document.getElementById('allCoursesGrid');
+            const searchInput = document.getElementById('coursesSearch');
+            const trimFilter = document.getElementById('coursesTrimesterFilter');
             
-            document.getElementById('reviewModal').classList.add('active');
-        };
+            if (trimFilter.options.length === 1) {
+                for (let i = 1; i <= 12; i++) trimFilter.innerHTML += `<option value="${i}">Trimester ${i}</option>`;
+                trimFilter.innerHTML += `<option value="0">Electives</option>`;
+                
+                // Add event listeners once
+                searchInput.addEventListener('input', updateCoursesGrid);
+                trimFilter.addEventListener('change', updateCoursesGrid);
+            }
 
-        document.querySelector('.close-modal').addEventListener('click', () => {
-            document.getElementById('reviewModal').classList.remove('active');
-            currentReviewDoc = null;
+            updateCoursesGrid();
+
+            function updateCoursesGrid() {
+                const term = searchInput.value.toLowerCase();
+                const trim = trimFilter.value;
+                
+                const filtered = CURRICULUM.filter(c => {
+                    const matchSearch = c.code.toLowerCase().includes(term) || c.title.toLowerCase().includes(term) || c.aliases.some(a=>a.toLowerCase().includes(term));
+                    const matchTrim = trim === 'all' || c.trimester.toString() === trim;
+                    return matchSearch && matchTrim;
+                });
+                
+                grid.innerHTML = filtered.map(c => createCourseCard(c)).join('');
+            }
+        }
+
+        function renderTrimesterPage(trim) {
+            const n = parseInt(trim);
+            document.getElementById('trimesterTitle').innerText = n === 0 ? 'Electives' : `Trimester ${n}`;
+            const courses = CURRICULUM.filter(c => c.trimester === n);
+            document.getElementById('trimesterGrid').innerHTML = courses.map(c => createCourseCard(c)).join('');
+        }
+
+        function renderCourseDetail(code) {
+            addToRecentCourses(code);
+            const course = CURRICULUM.find(c => c.code.replace(/\s+/g,'').toLowerCase() === code.toLowerCase());
+            if (!course) return;
+
+            const stats = getCourseStats(course.code);
+            const isFav = isFavoriteCourse(course.code);
+
+            document.getElementById('courseHeaderInfo').innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                    <div>
+                        <span class="pill primary" style="margin-bottom:1rem;">${course.code}</span>
+                        <h1>${course.title}</h1>
+                        <p class="text-muted" style="font-size:1.1rem;">${course.trimester === 0 ? 'Elective' : `Trimester ${course.trimester}`} • ${course.credits} Credits</p>
+                    </div>
+                    <button class="btn btn-outline ${isFav ? 'active' : ''}" onclick="toggleFavoriteCourse('${course.code}')" style="color: ${isFav ? 'var(--error)' : 'inherit'}">
+                        ♥ Favorite
+                    </button>
+                </div>
+                <div class="course-stats" style="border:none; margin-top:2rem; padding:0; gap:2rem;">
+                    <span style="font-size:1.1rem;"><strong>${stats.questions}</strong> Questions</span>
+                    <span style="font-size:1.1rem;"><strong>${stats.solutions}</strong> Solutions</span>
+                    <span style="font-size:1.1rem;"><strong>${stats.notes}</strong> Notes</span>
+                </div>
+            `;
+
+            const semFilter = document.getElementById('courseSemesterFilter');
+            const examFilter = document.getElementById('courseExamTypeFilter');
+            
+            if (semFilter.options.length === 1) {
+                semFilter.innerHTML = '<option value="all">All Semesters</option>' + SEMESTERS.map(s => `<option value="${s.code}">${s.label}</option>`).join('');
+                semFilter.addEventListener('change', updateCourseResources);
+                examFilter.addEventListener('change', updateCourseResources);
+            }
+            
+            // Reset filters on load
+            semFilter.value = 'all';
+            examFilter.value = 'all';
+            
+            updateCourseResources();
+
+            function updateCourseResources() {
+                const sVal = semFilter.value;
+                const eVal = examFilter.value;
+
+                let papers = approvedPapers.filter(p => p.courseCode.replace(/\s+/g,'').toLowerCase() === course.code.replace(/\s+/g,'').toLowerCase());
+                
+                if (sVal !== 'all') papers = papers.filter(p => p.semester === sVal);
+                if (eVal !== 'all') papers = papers.filter(p => p.examType === eVal);
+
+                const container = document.getElementById('courseResourcesContainer');
+                container.innerHTML = '';
+
+                // Group by type
+                const questions = papers.filter(p => p.type === 'Question' || !p.type);
+                const notes = papers.filter(p => p.type === 'Notes');
+                const labs = papers.filter(p => p.type === 'Lab');
+
+                if (questions.length > 0) {
+                    container.innerHTML += `<h3 class="section-title" style="margin-top:2rem;">📝 Previous Questions & Solutions</h3>`;
+                    container.innerHTML += `<div class="resource-list">${questions.map(p => createResourceCard(p)).join('')}</div>`;
+                }
+                if (notes.length > 0) {
+                    container.innerHTML += `<h3 class="section-title" style="margin-top:2rem;">📒 Class Notes</h3>`;
+                    container.innerHTML += `<div class="resource-list">${notes.map(p => createResourceCard(p)).join('')}</div>`;
+                }
+                if (labs.length > 0) {
+                    container.innerHTML += `<h3 class="section-title" style="margin-top:2rem;">🔬 Lab Materials</h3>`;
+                    container.innerHTML += `<div class="resource-list">${labs.map(p => createResourceCard(p)).join('')}</div>`;
+                }
+                if (papers.length === 0) {
+                    container.innerHTML = `<p class="text-muted" style="padding:3rem; text-align:center; border:1px dashed var(--border); border-radius:var(--radius-md);">No materials found matching criteria.</p>`;
+                }
+            }
+        }
+
+        function renderFavoritesPage() {
+            const fav = getFavorites();
+            
+            const cg = document.getElementById('favCoursesGrid');
+            const rl = document.getElementById('favResourcesList');
+            
+            const courses = fav.courses.map(code => CURRICULUM.find(c => c.code === code)).filter(Boolean);
+            if (courses.length > 0) {
+                cg.innerHTML = courses.map(c => createCourseCard(c)).join('');
+            } else {
+                cg.innerHTML = `<p class="text-muted">No favorite courses yet.</p>`;
+            }
+
+            const resources = fav.resources.map(id => approvedPapers.find(p => p.id === id)).filter(Boolean);
+            if (resources.length > 0) {
+                rl.innerHTML = resources.map(p => createResourceCard(p)).join('');
+            } else {
+                rl.innerHTML = `<p class="text-muted">No favorite resources yet.</p>`;
+            }
+        }
+
+        // ==========================================
+        // SMART SEARCH / AUTOCOMPLETE
+        // ==========================================
+        const searchInput = document.getElementById('heroSearch');
+        const autocomplete = document.getElementById('heroAutocomplete');
+
+        function fuzzySearch(rawQuery) {
+            const q = rawQuery.toLowerCase().replace(/[\s\-\_]/g, '');
+            const qWords = rawQuery.toLowerCase().trim();
+            if (!q) return { courses: [], trimesters: [], semesters: [] };
+
+            // Match courses
+            const courses = CURRICULUM.filter(c =>
+                c.code.toLowerCase().replace(/\s+/g, '').includes(q) ||
+                c.title.toLowerCase().includes(qWords) ||
+                c.aliases.some(a => a.toLowerCase().replace(/\s+/g, '').includes(q))
+            ).slice(0, 6);
+
+            // Match trimesters: "3rd", "3", "third", "trimester 3"
+            const trimLabels = ['first','second','third','fourth','fifth','sixth','seventh','eighth','ninth','tenth','eleventh','twelfth'];
+            const trimesters = [];
+            for (let i = 1; i <= 12; i++) {
+                const ordinal = ['1st','2nd','3rd','4th','5th','6th','7th','8th','9th','10th','11th','12th'][i-1];
+                const label = `${ordinal} Trimester`;
+                const haystack = `${i} ${ordinal} ${trimLabels[i-1]} trimester${i}`.toLowerCase();
+                if (haystack.includes(q) || q.includes(String(i))) {
+                    trimesters.push({ n: i, label });
+                }
+            }
+
+            // Match academic semesters: "261" -> Spring 2026
+            const semesters = SEMESTERS.filter(s =>
+                s.code.includes(q) || s.label.toLowerCase().includes(qWords)
+            ).slice(0, 4);
+
+            return { courses, trimesters: trimesters.slice(0, 3), semesters };
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            const val = e.target.value.trim();
+            if (!val) {
+                autocomplete.classList.remove('active');
+                return;
+            }
+
+            const results = fuzzySearch(val);
+            let resultsHTML = '';
+
+            if (results.courses.length > 0) {
+                resultsHTML += `<div style="padding:0.5rem 1rem; font-size:0.75rem; font-weight:bold; color:var(--text-muted); background:var(--surface-2);">📚 COURSES</div>`;
+                results.courses.forEach(c => {
+                    const cleanCode = c.code.replace(/\s+/g, '');
+                    resultsHTML += `<div class="autocomplete-item" onclick="location.hash='#course/${cleanCode}'; document.getElementById('heroAutocomplete').classList.remove('active');">
+                        <div>
+                            <div style="font-weight:600;">${c.code}</div>
+                            <div style="font-size:0.875rem; color:var(--text-muted);">${c.title} · ${c.trimester === 0 ? 'Elective' : 'Trim ' + c.trimester}</div>
+                        </div>
+                    </div>`;
+                });
+            }
+
+            if (results.trimesters.length > 0) {
+                resultsHTML += `<div style="padding:0.5rem 1rem; font-size:0.75rem; font-weight:bold; color:var(--text-muted); background:var(--surface-2);">📅 TRIMESTERS</div>`;
+                results.trimesters.forEach(t => {
+                    resultsHTML += `<div class="autocomplete-item" onclick="location.hash='#trimester/${t.n}'; document.getElementById('heroAutocomplete').classList.remove('active');">
+                        <div style="font-weight:600;">${t.label}</div>
+                    </div>`;
+                });
+            }
+
+            if (results.semesters.length > 0) {
+                resultsHTML += `<div style="padding:0.5rem 1rem; font-size:0.75rem; font-weight:bold; color:var(--text-muted); background:var(--surface-2);">📆 ACADEMIC SEMESTERS</div>`;
+                results.semesters.forEach(s => {
+                    resultsHTML += `<div class="autocomplete-item" onclick="location.hash='#courses?sem=${s.code}'; document.getElementById('heroAutocomplete').classList.remove('active');">
+                        <div style="font-weight:600;">${s.code} — ${s.label}</div>
+                    </div>`;
+                });
+            }
+
+            if (resultsHTML) {
+                autocomplete.innerHTML = resultsHTML;
+                autocomplete.classList.add('active');
+            } else {
+                autocomplete.innerHTML = `<div style="padding:1rem; color:var(--text-muted); text-align:center;">No results found for "${val}"</div>`;
+                autocomplete.classList.add('active');
+            }
         });
 
-        // Action Handlers
-        const updateStatus = async (status, actionName) => {
-            if(!currentReviewDoc) return;
-            const id = currentReviewDoc.id;
-            const comment = document.getElementById('modal-comment').value;
+        searchInput.addEventListener('keydown', (e) => {
+            const items = autocomplete.querySelectorAll('.autocomplete-item');
+            const active = autocomplete.querySelector('.autocomplete-item.highlighted');
+            let idx = Array.from(items).indexOf(active);
 
-            try {
-                const docRef = doc(db, QUESTION_COLLECTION, id);
-                const updateData = { 
-                    status, 
-                    adminComment: comment,
-                    updatedAt: serverTimestamp()
-                };
-
-                if(status === 'approved') {
-                    updateData.approvedAt = serverTimestamp();
-                    updateData.approvedByEmail = currentUser.email;
-                } else if(status === 'rejected') {
-                    updateData.rejectedAt = serverTimestamp();
-                    updateData.rejectedByEmail = currentUser.email;
-                }
-
-                await updateDoc(docRef, updateData);
-
-                // Audit Log
-                await addDoc(collection(db, AUDIT_COLLECTION), {
-                    action: actionName,
-                    adminEmail: currentUser.email,
-                    targetId: id,
-                    targetCourse: currentReviewDoc.courseCode,
-                    notes: comment,
-                    timestamp: serverTimestamp()
-                });
-
-                // Backend Email Notification & Asset Management Call
-                try {
-                    const idToken = await currentUser.getIdToken();
-                    const notifyRes = await fetch('/api/questions/notify', {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `Bearer ${idToken}`,
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            email: currentReviewDoc.submitterEmail || currentReviewDoc.contactEmail || '',
-                            status: status,
-                            courseCode: currentReviewDoc.courseCode,
-                            courseName: currentReviewDoc.courseName || getCourseTitle(currentReviewDoc.courseCode),
-                            examType: currentReviewDoc.examType,
-                            trimester: currentReviewDoc.trimester,
-                            topic: currentReviewDoc.topic
-                        })
-                    });
-                    if (!notifyRes.ok) {
-                        const errText = await notifyRes.text();
-                        console.warn('Backend notification error:', notifyRes.status, errText);
-                    }
-                } catch (notifyErr) {
-                    console.warn('Backend notification dispatch error:', notifyErr);
-                }
-
-                showToast(`Submission ${status.replace('_', ' ')} successfully.`, status === 'approved' ? 'success' : (status === 'rejected' ? 'error' : 'warning'));
-                document.getElementById('reviewModal').classList.remove('active');
-
-            } catch(err) {
-                console.error(err);
-                showToast('Error updating status: ' + err.message, 'error');
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (active) active.classList.remove('highlighted');
+                idx = (idx + 1) % items.length;
+                items[idx]?.classList.add('highlighted');
+                items[idx]?.scrollIntoView({ block: 'nearest' });
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (active) active.classList.remove('highlighted');
+                idx = idx <= 0 ? items.length - 1 : idx - 1;
+                items[idx]?.classList.add('highlighted');
+                items[idx]?.scrollIntoView({ block: 'nearest' });
+            } else if (e.key === 'Enter' && active) {
+                e.preventDefault();
+                active.click();
+            } else if (e.key === 'Escape') {
+                autocomplete.classList.remove('active');
+                searchInput.blur();
             }
+        });
+
+        // Hide on click outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-container')) {
+                autocomplete.classList.remove('active');
+            }
+        });
+
+        // ==========================================
+        // UPLOAD FORM LOGIC
+        // ==========================================
+        window.nextStep = function(step) {
+            document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.step-dot').forEach(d => {
+                const n = parseInt(d.getAttribute('data-step'));
+                d.classList.remove('active', 'completed');
+                if (n < step) d.classList.add('completed');
+                else if (n === step) d.classList.add('active');
+            });
+            document.getElementById(`step${step}`).classList.add('active');
         };
 
-        document.getElementById('btn-approve').addEventListener('click', () => updateStatus('approved', 'APPROVE'));
-        document.getElementById('btn-reject').addEventListener('click', () => updateStatus('rejected', 'REJECT'));
-        document.getElementById('btn-revision').addEventListener('click', () => updateStatus('needs_revision', 'REVISION'));
+        function populateUploadForm() {
+            const tSel = document.getElementById('upTrimester');
+            const cSel = document.getElementById('upCourse');
+            const sSel = document.getElementById('upSemester');
+            
+            if (tSel.options.length === 0) {
+                tSel.innerHTML = '<option value="">Select Trimester</option>';
+                for(let i=1; i<=12; i++) tSel.innerHTML += `<option value="${i}">Trimester ${i}</option>`;
+                tSel.innerHTML += `<option value="0">Electives</option>`;
+                
+                sSel.innerHTML = SEMESTERS.map(s => `<option value="${s.code}">${s.label}</option>`).join('');
+
+                tSel.addEventListener('change', () => {
+                    const trim = parseInt(tSel.value);
+                    if (isNaN(trim)) {
+                        cSel.disabled = true;
+                        cSel.innerHTML = '<option value="">Select Trimester first</option>';
+                        return;
+                    }
+                    cSel.disabled = false;
+                    const courses = CURRICULUM.filter(c => c.trimester === trim);
+                    cSel.innerHTML = '<option value="">Select Course</option>' + courses.map(c => `<option value="${c.code}">${c.code} - ${c.title}</option>`).join('');
+                });
+
+                document.querySelectorAll('input[name="materialType"]').forEach(radio => {
+                    radio.addEventListener('change', (e) => {
+                        const val = e.target.value;
+                        document.getElementById('examTypeGroup').style.display = val === 'Question' ? 'block' : 'none';
+                        document.getElementById('solutionFileGroup').style.display = val === 'Question' ? 'block' : 'none';
+                        // Update topic label: Required for Notes, Optional for Questions/Lab
+                        const topicLabel = document.getElementById('upTopicLabel');
+                        if (val === 'Notes') {
+                            topicLabel.innerHTML = 'Topic / Title <span style="color:var(--danger);font-weight:600">(Required for Notes)</span>';
+                            document.getElementById('upTopic').placeholder = 'e.g. Chapter 3 Summary, Lecture Notes Week 5';
+                        } else {
+                            topicLabel.innerHTML = 'Topic / Title <span style="color:var(--text-muted);font-weight:400">(Optional for Questions)</span>';
+                            document.getElementById('upTopic').placeholder = 'e.g. Chapter 3 Summary';
+                        }
+                    });
+                });
+            }
+        }
+
+        async function safeFetchJson(url, options) {
+            let response;
+            try {
+                response = await fetch(url, options);
+            } catch (e) {
+                throw new Error(`Network error calling ${url}. Please check server connectivity.`);
+            }
+            const text = await response.text();
+            let data;
+            try {
+                data = JSON.parse(text);
+            } catch {
+                if (!response.ok) {
+                    throw new Error(`Server returned HTTP ${response.status} (${response.statusText || 'Not Found'}). Please verify the backend server (server.js) is running and reachable.`);
+                }
+                throw new Error(`Unexpected server response: ${text.slice(0, 100)}`);
+            }
+            if (!response.ok) {
+                throw new Error(data.error || data.message || `Request failed with HTTP ${response.status}`);
+            }
+            return data;
+        }
+
+        async function requestUploadSignature(assetType, courseCode, topic) {
+            return await safeFetchJson('/api/cloudinary/sign-upload', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    assetType,
+                    courseCode,
+                    assetLabel: `${courseCode} ${assetType}${topic ? ' - ' + topic : ''}`,
+                    resourceType: 'auto'
+                })
+            });
+        }
+
+        async function uploadToCloudinary(assetType, file, courseCode, topic) {
+            const signature = await requestUploadSignature(assetType, courseCode, topic);
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('api_key', signature.apiKey);
+            formData.append('signature', signature.signature);
+            Object.entries(signature.uploadParams || {}).forEach(([key, value]) => {
+                formData.append(key, value);
+            });
+            const data = await safeFetchJson(signature.uploadUrl, { method: 'POST', body: formData });
+            return {
+                assetType,
+                topic,
+                pdfUrl: data.secure_url,
+                cloudinaryPublicId: data.public_id,
+                cloudinaryResourceType: data.resource_type || 'raw',
+                cloudinaryAssetId: data.asset_id || '',
+                bytes: data.bytes || file.size,
+                originalFilename: data.original_filename || file.name
+            };
+        }
+
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitUploadBtn');
+            const status = document.getElementById('uploadStatus');
+            btn.disabled = true;
+            btn.innerText = 'Uploading...';
+            status.innerHTML = '';
+
+            try {
+                const courseCode = document.getElementById('upCourse').value;
+                const course = CURRICULUM.find(c => c.code === courseCode);
+                if (!course) throw new Error('Please select a valid course.');
+
+                const trimester = document.getElementById('upTrimester').value;
+                const semester = document.getElementById('upSemester').value;
+                const type = document.querySelector('input[name="materialType"]:checked').value;
+                const examType = type === 'Question' ? document.getElementById('upExamType').value : (type === 'Lab' ? 'Lab' : 'Notes');
+                const topic = document.getElementById('upTopic').value.trim();
+                const submitterName = document.getElementById('upSubmitterName').value.trim();
+                const submitterEmail = document.getElementById('upSubmitterEmail').value.trim().toLowerCase();
+
+                if (!/^[a-z0-9._%+-]+@[a-z0-9-]+\.uiu\.ac\.bd$/i.test(submitterEmail)) {
+                    throw new Error('Please use a UIU university email ending in .uiu.ac.bd.');
+                }
+
+                const mainFile = document.getElementById('upMainFile').files[0];
+                const solFile = document.getElementById('upSolutionFile')?.files[0];
+                if (!mainFile) throw new Error('Please attach a file before submitting.');
+
+                // Topic is required only for Notes; optional for Questions (Midterm, Final, Quiz, Assignment)
+                if (type === 'Notes' && !topic) {
+                    throw new Error('Please enter a topic or title for your notes.');
+                }
+
+                status.innerHTML = `<span style="color:var(--info)">Uploading files to Cloudinary...</span>`;
+
+                const mainAssetType = type === 'Question' ? 'question' : type === 'Lab' ? 'question' : 'note';
+                const materialAssets = [await uploadToCloudinary(mainAssetType, mainFile, courseCode, topic)];
+
+                if (type === 'Question' && solFile) {
+                    materialAssets.push(await uploadToCloudinary('solution', solFile, courseCode, topic));
+                }
+
+                status.innerHTML = `<span style="color:var(--info)">Saving submission for admin approval...</span>`;
+
+                const payload = {
+                    submitterName,
+                    submitterEmail,
+                    courseCode: courseCode.replace(/\s+/g, ' ').toUpperCase(),
+                    courseName: course.title,
+                    topic: topic || `${examType} ${courseCode}`,
+                    trimester: String(trimester),
+                    examType,
+                    materialAssets
+                };
+
+                const validationData = await safeFetchJson('/api/questions/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                await addDoc(collection(db, QUESTION_COLLECTION), {
+                    ...validationData.submission,
+                    semester,
+                    type: type,
+                    courseSearch: `${courseCode} ${course.title} ${topic}`.toLowerCase(),
+                    materialGroup: type === 'Notes' ? 'notes' : 'questions',
+                    submittedAt: serverTimestamp()
+                });
+
+                status.innerHTML = `<span style="color:var(--success)">Successfully submitted for review! Thank you.</span>`;
+                showToast('Material submitted for admin review.', 'success');
+                setTimeout(() => {
+                    document.getElementById('uploadForm').reset();
+                    nextStep(1);
+                    btn.disabled = false;
+                    btn.innerText = 'Submit Material';
+                    status.innerHTML = '';
+                }, 2500);
+
+            } catch (err) {
+                console.error('Upload failed:', err);
+                status.innerHTML = `<span style="color:var(--error)">Error: ${err.message}</span>`;
+                btn.disabled = false;
+                btn.innerText = 'Submit Material';
+            }
+        });
+
+        // ==========================================
+        // PDF VIEWER MODAL
+        // ==========================================
+        window.openPdfViewer = function(url, title) {
+            const modal = document.getElementById('pdfModal');
+            document.getElementById('pdfModalTitle').innerText = title;
+            
+            // Handle google drive preview or direct pdf
+            let iframeUrl = url;
+            if (url.endsWith('.pdf')) {
+                // simple direct iframe for pdf
+                iframeUrl = url;
+            }
+            
+            document.getElementById('pdfModalIframe').src = iframeUrl;
+            document.getElementById('pdfModalDownload').href = url;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        };
+
+        window.closePdfViewer = function() {
+            const modal = document.getElementById('pdfModal');
+            modal.classList.remove('active');
+            document.getElementById('pdfModalIframe').src = '';
+            document.body.style.overflow = '';
+        };
+
+        // Mobile menu
+        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+            document.getElementById('navLinks').classList.toggle('active');
+        });
+
+        // Init
+        initTheme();
+        listenForApprovedPapers();
+        handleRouteChange();
 
     </script>
 </body>
