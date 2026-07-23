@@ -1987,7 +1987,8 @@
                     type: type,
                     courseSearch: `${courseCode} ${course.title} ${topic}`.toLowerCase(),
                     materialGroup: type === 'Notes' ? 'notes' : 'questions',
-                    submittedAt: serverTimestamp()
+                    submittedAt: serverTimestamp(),
+                    createdAt: serverTimestamp()
                 });
 
                 status.innerHTML = `<span style="color:var(--success)">Successfully submitted for review! Thank you.</span>`;
