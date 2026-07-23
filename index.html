@@ -3,31 +3,612 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | UIU Question Bank</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>UIU Question Bank</title>
+    <style>
+        :root {
+            --orange: #f37021;
+            --orange-2: #ff9f45;
+            --line: #ffd2a8;
+            --ink: #202124;
+            --muted: #6b5f57;
+            --paper: #ffffff;
+            --soft: #fff7ef;
+            --blue: #0a5a8f;
+            --teal: #087f7b;
+            --green: #218358;
+            --red: #cf3f35;
+            --shadow: 0 16px 40px rgba(175, 79, 13, 0.12);
+            --gradient: linear-gradient(135deg, #f37021 0%, #ff9f45 55%, #ffd66b 100%);
+            --calm-gradient: linear-gradient(135deg, #fff7ef 0%, #ffffff 58%, #eef9f8 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at top left, rgba(255, 214, 107, 0.4), transparent 34rem),
+                linear-gradient(145deg, #fff8f0 0%, #fff 48%, #f0fbfa 100%);
+            font-family: Inter, "Segoe UI", Arial, sans-serif;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        button,
+        .button-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 42px;
+            padding: 10px 15px;
+            border: 0;
+            border-radius: 8px;
+            color: #ffffff;
+            background: var(--gradient);
+            font-weight: 800;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+        }
+
+        button:hover,
+        .button-link:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 22px rgba(243, 112, 33, 0.22);
+        }
+
+        button:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .button-secondary {
+            background: linear-gradient(135deg, var(--blue), #1387c8);
+        }
+
+        .button-plain {
+            border: 1px solid var(--line);
+            color: var(--ink);
+            background: #ffffff;
+        }
+
+        input,
+        select {
+            width: 100%;
+            min-height: 44px;
+            padding: 10px 12px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            color: var(--ink);
+            background: #ffffff;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 4px rgba(243, 112, 33, 0.13);
+        }
+
+        label {
+            display: grid;
+            gap: 7px;
+            color: var(--ink);
+            font-weight: 800;
+        }
+
+        label span,
+        .muted {
+            color: var(--muted);
+            font-size: 0.9rem;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 14px clamp(16px, 4vw, 48px);
+            border-bottom: 1px solid rgba(243, 112, 33, 0.18);
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(14px);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 900;
+            text-decoration: none;
+            letter-spacing: 0;
+        }
+
+        .brand-mark {
+            display: grid;
+            place-items: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            color: #ffffff;
+            background: var(--gradient);
+            box-shadow: 0 10px 20px rgba(243, 112, 33, 0.2);
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .nav-links a {
+            padding: 9px 11px;
+            border-radius: 8px;
+            color: var(--muted);
+            font-size: 0.92rem;
+            font-weight: 800;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--orange);
+            background: var(--soft);
+        }
+
+        main {
+            width: min(1180px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 24px 0 56px;
+        }
+
+        .section {
+            padding: 24px 0;
+        }
+
+        .dashboard-shell {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+            gap: 18px;
+            align-items: stretch;
+            min-height: calc(100vh - 116px);
+        }
+
+        .hero-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 520px;
+            padding: clamp(22px, 5vw, 44px);
+            border-radius: 8px;
+            color: #ffffff;
+            background:
+                linear-gradient(135deg, rgba(32, 33, 36, 0.1), rgba(32, 33, 36, 0.02)),
+                var(--gradient);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .hero-panel h1,
+        .page-head h1 {
+            max-width: 780px;
+            margin: 0 0 16px;
+            font-size: clamp(2.35rem, 7vw, 5.8rem);
+            line-height: 0.95;
+            letter-spacing: 0;
+        }
+
+        .hero-panel p,
+        .page-head p {
+            max-width: 680px;
+            margin: 0;
+            color: rgba(255, 255, 255, 0.92);
+            font-size: clamp(1rem, 2vw, 1.18rem);
+            line-height: 1.6;
+        }
+
+        .hero-actions,
+        .toolbar,
+        .chips,
+        .resource-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .hero-actions {
+            margin-top: 28px;
+        }
+
+        .hero-actions .button-link {
+            background: #ffffff;
+            color: var(--orange);
+        }
+
+        .hero-actions .button-secondary {
+            color: #ffffff;
+            background: rgba(10, 90, 143, 0.9);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        .stat {
+            min-height: 112px;
+            padding: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.38);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 2rem;
+            line-height: 1;
+        }
+
+        .stat span {
+            display: block;
+            margin-top: 8px;
+            color: rgba(255, 255, 255, 0.88);
+            font-weight: 800;
+        }
+
+        .panel,
+        .course-card,
+        .resource-card,
+        .upload-panel {
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--paper);
+            box-shadow: var(--shadow);
+        }
+
+        .panel {
+            padding: 18px;
+        }
+
+        .panel h2,
+        .section-title h2,
+        .upload-panel h2 {
+            margin: 0;
+            color: var(--ink);
+            font-size: 1.45rem;
+            letter-spacing: 0;
+        }
+
+        .search-wrap {
+            position: relative;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 10px;
+            margin: 16px 0;
+        }
+
+        .search-wrap input {
+            padding-left: 42px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--orange);
+            font-weight: 900;
+        }
+
+        .course-list,
+        .resource-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .course-button {
+            display: grid;
+            gap: 6px;
+            width: 100%;
+            min-height: 76px;
+            padding: 13px;
+            border: 1px solid var(--line);
+            border-left: 5px solid var(--orange);
+            border-radius: 8px;
+            color: var(--ink);
+            background: #ffffff;
+            text-align: left;
+        }
+
+        .course-button.active {
+            border-color: var(--orange);
+            background: var(--soft);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .page-head {
+            min-height: 340px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin: 0 0 24px;
+            padding: clamp(22px, 5vw, 44px);
+            border-radius: 8px;
+            color: #ffffff;
+            background:
+                linear-gradient(135deg, rgba(32, 33, 36, 0.08), rgba(32, 33, 36, 0.02)),
+                var(--gradient);
+            box-shadow: var(--shadow);
+        }
+
+        .eyebrow {
+            width: fit-content;
+            margin-bottom: 16px;
+            padding: 6px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.46);
+            border-radius: 999px;
+            color: #ffffff;
+            font-size: 0.82rem;
+            font-weight: 900;
+        }
+
+        .upload-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 18px;
+        }
+
+        .upload-panel {
+            padding: clamp(18px, 4vw, 28px);
+            background: var(--calm-gradient);
+        }
+
+        .notes-panel {
+            border-color: #bce5e2;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .full-span {
+            grid-column: 1 / -1;
+        }
+
+        .file-grid,
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .two-files {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .file-box {
+            display: grid;
+            gap: 9px;
+            min-height: 148px;
+            padding: 14px;
+            border: 1px dashed var(--orange);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.74);
+        }
+
+        .file-box strong {
+            color: var(--orange);
+        }
+
+        .status {
+            margin-top: 14px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-weight: 800;
+        }
+
+        .status.info {
+            border: 1px solid var(--line);
+            color: var(--blue);
+            background: #eef7ff;
+        }
+
+        .status.success {
+            border: 1px solid #a9dec8;
+            color: var(--green);
+            background: #effbf5;
+        }
+
+        .status.error {
+            border: 1px solid #f0b5ad;
+            color: var(--red);
+            background: #fff1ef;
+        }
+
+        .course-card {
+            display: grid;
+            gap: 16px;
+            min-height: 280px;
+            padding: 16px;
+        }
+
+        .course-card h3,
+        .resource-card h3 {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .resource-card {
+            display: grid;
+            gap: 12px;
+            padding: 14px;
+            box-shadow: none;
+        }
+
+        .course-section {
+            display: grid;
+            gap: 10px;
+            padding-top: 8px;
+            border-top: 1px solid var(--line);
+        }
+
+        .course-section h4 {
+            margin: 0;
+            color: var(--orange);
+            font-size: 0.95rem;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            width: fit-content;
+            min-height: 28px;
+            padding: 5px 9px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            color: var(--muted);
+            background: var(--soft);
+            font-size: 0.8rem;
+            font-weight: 900;
+        }
+
+        .pill-blue {
+            border-color: #c7e2f3;
+            color: var(--blue);
+            background: #edf7fd;
+        }
+
+        .pill-teal {
+            border-color: #bce5e2;
+            color: var(--teal);
+            background: #effbf9;
+        }
+
+        .empty {
+            padding: 24px 16px;
+            border: 1px dashed var(--line);
+            border-radius: 8px;
+            color: var(--muted);
+            background: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            font-weight: 700;
+        }
+
+        /* Page visibility: only the active page is shown */
+        .page { display: none; }
+        .page.active { display: block; }
+
+        @media (max-width: 920px) {
+            .dashboard-shell,
+            .form-grid,
+            .file-grid,
+            .courses-grid,
+            .two-files {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-panel {
+                min-height: 460px;
+            }
+        }
+
+        @media (max-width: 680px) {
+            .topbar,
+            .section-title {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .nav-links {
+                justify-content: flex-start;
+            }
+
+            main {
+                width: min(100% - 20px, 1180px);
+                padding-top: 10px;
+            }
+
+            .hero-panel {
+                min-height: 500px;
+                padding: 20px;
+            }
+
+            .stats-grid,
+            .search-wrap {
+                grid-template-columns: 1fr;
+            }
+
+            .search-wrap input {
+                padding-left: 12px;
+            }
+
+            .search-icon {
+                display: none;
+            }
+
+            .full-span {
+                grid-column: auto;
+            }
+        }
+    </style>
 </head>
 <body data-page="dashboard">
     <header class="topbar">
-        <a class="brand" href="/dashboard" aria-label="UIU Question Bank dashboard">
+        <a class="brand" href="#dashboard" aria-label="UIU Question Bank dashboard">
             <span class="brand-mark">QB</span>
             <span>UIU Question Bank</span>
         </a>
         <nav class="nav-links" aria-label="Primary navigation">
-            <a class="active" href="/dashboard">Dashboard</a>
-            <a href="/upload">Upload</a>
-            <a href="/courses">All Courses</a>
+            <a data-nav="dashboard" href="#dashboard">Dashboard</a>
+            <a data-nav="upload" href="#upload">Upload</a>
+            <a data-nav="courses" href="#courses">All Courses</a>
         </nav>
     </header>
 
-    <main>
+    <!-- ==================== DASHBOARD PAGE ==================== -->
+    <main id="page-dashboard" class="page">
         <section class="dashboard-shell">
             <div class="hero-panel">
                 <div>
                     <h1>Find university course questions faster.</h1>
                     <p>Search approved UIU course questions and solutions, choose a course, and jump into the exact material you need.</p>
                     <div class="hero-actions">
-                        <a class="button-link" href="/upload">Upload Material</a>
-                        <a class="button-link button-secondary" href="/courses">Browse Courses</a>
+                        <a class="button-link" href="#upload">Upload Material</a>
+                        <a class="button-link button-secondary" href="#courses">Browse Courses</a>
                     </div>
                 </div>
                 <div class="stats-grid" aria-label="Question bank statistics">
@@ -66,7 +647,7 @@
                     <h2 id="selectedCourseTitle">Selected Course</h2>
                     <p id="selectedCourseMeta" class="muted">Use search to focus a course.</p>
                 </div>
-                <a class="button-link button-plain" href="/courses">View All Courses</a>
+                <a class="button-link button-plain" href="#courses">View All Courses</a>
             </div>
             <div id="selectedResources" class="resource-list">
                 <div class="empty">Approved questions and solutions will appear here.</div>
@@ -74,6 +655,683 @@
         </section>
     </main>
 
-    <script type="module" src="app.js"></script>
+    <!-- ==================== COURSES PAGE ==================== -->
+    <main id="page-courses" class="page">
+        <section class="page-head">
+            <span class="eyebrow">All Courses</span>
+            <h1>Questions, solutions, and notes by course.</h1>
+            <p>Questions and solutions are grouped together. Notes stay in their own topic-based list.</p>
+        </section>
+
+        <section class="section">
+            <div class="section-title">
+                <div>
+                    <h2>Course Grid</h2>
+                    <p class="muted">Browse approved materials only.</p>
+                </div>
+                <div class="toolbar">
+                    <input id="allCourseSearch" type="search" placeholder="Filter course grid">
+                    <select id="assetFilter">
+                        <option value="">All Materials</option>
+                        <option value="question">Questions</option>
+                        <option value="solution">Solutions</option>
+                        <option value="note">Notes</option>
+                    </select>
+                </div>
+            </div>
+            <div id="allCoursesGrid" class="courses-grid">
+                <div class="empty">Loading courses...</div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ==================== UPLOAD PAGE ==================== -->
+    <main id="page-upload" class="page">
+        <section class="page-head">
+            <span class="eyebrow">Upload</span>
+            <h1>Submit course materials for approval.</h1>
+            <p>Questions and solutions stay together. Notes are submitted separately with their own topic and document file.</p>
+        </section>
+
+        <section class="upload-grid">
+            <div class="upload-panel">
+                <h2>Questions &amp; Solutions</h2>
+                <p class="muted">Upload a question paper and optionally attach its solution. The admin approval email will go to the university email you provide.</p>
+                <form id="questionUploadForm" class="form-grid">
+                    <label>
+                        <span>Name</span>
+                        <input id="questionSubmitterName" type="text" autocomplete="name" placeholder="Your full name" required>
+                    </label>
+                    <label>
+                        <span>University email</span>
+                        <input id="questionSubmitterEmail" type="email" autocomplete="email" placeholder="name@bscse.uiu.ac.bd" required>
+                    </label>
+                    <label>
+                        <span>Course code</span>
+                        <input id="questionCourseCode" type="text" placeholder="CSE 1115" required>
+                    </label>
+                    <label>
+                        <span>Course title</span>
+                        <input id="questionCourseName" type="text" placeholder="Object Oriented Programming" required>
+                    </label>
+                    <label>
+                        <span>Trimester</span>
+                        <input id="questionTrimester" type="text" placeholder="243">
+                    </label>
+                    <label>
+                        <span>Exam type</span>
+                        <select id="questionExamType">
+                            <option value="General">General</option>
+                            <option value="Midterm">Midterm</option>
+                            <option value="Final">Final</option>
+                            <option value="Quiz">Quiz</option>
+                            <option value="Assignment">Assignment</option>
+                            <option value="Lab">Lab</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </label>
+                    <label class="full-span">
+                        <span>Question title</span>
+                        <input id="questionTopic" type="text" placeholder="Midterm 2025, array practice, set A" required>
+                    </label>
+                    <div class="full-span file-grid two-files">
+                        <label class="file-box">
+                            <strong>Question file</strong>
+                            <span>PDF, image, DOC, or DOCX</span>
+                            <input id="questionFile" type="file" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" required>
+                        </label>
+                        <label class="file-box">
+                            <strong>Solution file</strong>
+                            <span>Optional answer sheet</span>
+                            <input id="solutionFile" type="file" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx">
+                        </label>
+                    </div>
+                    <div class="full-span toolbar">
+                        <button id="questionUploadButton" type="submit">Submit Question</button>
+                    </div>
+                </form>
+                <div id="questionUploadStatus" class="status info">Ready for question upload.</div>
+            </div>
+
+            <div class="upload-panel notes-panel">
+                <h2>Notes</h2>
+                <p class="muted">Notes are separate from question papers. Add a topic and upload PDF, PPT, DOC, or another document file.</p>
+                <form id="notesUploadForm" class="form-grid">
+                    <label>
+                        <span>Name</span>
+                        <input id="notesSubmitterName" type="text" autocomplete="name" placeholder="Your full name" required>
+                    </label>
+                    <label>
+                        <span>University email</span>
+                        <input id="notesSubmitterEmail" type="email" autocomplete="email" placeholder="name@bscse.uiu.ac.bd" required>
+                    </label>
+                    <label>
+                        <span>Course code</span>
+                        <input id="notesCourseCode" type="text" placeholder="CSE 1115" required>
+                    </label>
+                    <label>
+                        <span>Course title</span>
+                        <input id="notesCourseName" type="text" placeholder="Object Oriented Programming" required>
+                    </label>
+                    <label class="full-span">
+                        <span>Topic</span>
+                        <input id="notesTopic" type="text" placeholder="Inheritance, recursion, database normalization" required>
+                    </label>
+                    <label class="full-span file-box">
+                        <strong>Notes file</strong>
+                        <span>PDF, PPT, PPTX, DOC, DOCX, image, or text document</span>
+                        <input id="notesFile" type="file" accept=".pdf,.ppt,.pptx,.doc,.docx,.png,.jpg,.jpeg,.txt" required>
+                    </label>
+                    <div class="full-span toolbar">
+                        <button id="notesUploadButton" type="submit">Submit Notes</button>
+                    </div>
+                </form>
+                <div id="notesUploadStatus" class="status info">Ready for notes upload.</div>
+            </div>
+        </section>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
+        import {
+            addDoc,
+            collection,
+            getFirestore,
+            onSnapshot,
+            query,
+            serverTimestamp,
+            where
+        } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: 'AIzaSyA028mrZX2RcDewoBTy0vLHOXWAGR61mOk',
+            authDomain: 'uiu-toolkits-admin.firebaseapp.com',
+            databaseURL: 'https://uiu-toolkits-admin-default-rtdb.firebaseio.com',
+            projectId: 'uiu-toolkits-admin',
+            storageBucket: 'uiu-toolkits-admin.firebasestorage.app',
+            messagingSenderId: '643628466748',
+            appId: '1:643628466748:web:84d4392faf2466654db939',
+            measurementId: 'G-3BW6M1SXLP'
+        };
+
+        const QUESTION_COLLECTION = 'questionPapers';
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let approvedPapers = [];
+        let selectedCourseKey = '';
+
+        /* ── Router ── */
+        const VALID_PAGES = ['dashboard', 'courses', 'upload'];
+
+        function getPageFromHash() {
+            const hash = location.hash.replace('#', '') || 'dashboard';
+            return VALID_PAGES.includes(hash) ? hash : 'dashboard';
+        }
+
+        function navigateTo(pageName) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+            // Show the target page
+            const target = document.getElementById(`page-${pageName}`);
+            if (target) target.classList.add('active');
+            // Update body data-page attribute
+            document.body.dataset.page = pageName;
+            // Update nav active state
+            document.querySelectorAll('.nav-links a').forEach(a => {
+                a.classList.toggle('active', a.dataset.nav === pageName);
+            });
+            // Update document title
+            const titles = {
+                dashboard: 'Dashboard | UIU Question Bank',
+                courses: 'All Courses | UIU Question Bank',
+                upload: 'Upload | UIU Question Bank'
+            };
+            document.title = titles[pageName] || 'UIU Question Bank';
+            // Re-render current page data
+            renderCurrentPage();
+        }
+
+        window.addEventListener('hashchange', () => navigateTo(getPageFromHash()));
+
+        /* ── Helpers ── */
+        function $(id) {
+            return document.getElementById(id);
+        }
+
+        function normalizeText(value) {
+            return String(value || '').trim();
+        }
+
+        function escapeHtml(value) {
+            return String(value || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function isUniversityEmail(value) {
+            return /^[a-z0-9._%+-]+@[a-z0-9-]+\.uiu\.ac\.bd$/i.test(normalizeText(value));
+        }
+
+        function getEmailHandle(email) {
+            return normalizeText(email).split('@')[0] || 'Contributor';
+        }
+
+        function setStatus(node, message, type = 'info') {
+            if (!node) return;
+            node.textContent = message;
+            node.className = `status ${type}`;
+        }
+
+        function formatDate(value) {
+            if (!value) return 'Recently';
+            const date = typeof value.toDate === 'function' ? value.toDate() : new Date(value);
+            if (Number.isNaN(date.getTime())) return 'Recently';
+            return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        }
+
+        function paperFromDoc(snapshot) {
+            return { id: snapshot.id, ...snapshot.data() };
+        }
+
+        function sortNewestFirst(a, b) {
+            const aMs = a.submittedAt?.toMillis ? a.submittedAt.toMillis() : 0;
+            const bMs = b.submittedAt?.toMillis ? b.submittedAt.toMillis() : 0;
+            return bMs - aMs;
+        }
+
+        function getSubmitterEmail(paper) {
+            return normalizeText(paper.submitterEmail || paper.contactEmail || paper.providedEmail || paper.userEmail || paper.email);
+        }
+
+        function getAssets(paper) {
+            const modernAssets = Array.isArray(paper.materialAssets)
+                ? paper.materialAssets.map(asset => ({
+                    assetType: normalizeText(asset.assetType || asset.type).toLowerCase() || 'question',
+                    topic: normalizeText(asset.topic || paper.topic),
+                    pdfUrl: normalizeText(asset.pdfUrl || asset.secure_url || asset.secureUrl),
+                    cloudinaryPublicId: normalizeText(asset.cloudinaryPublicId || asset.public_id || asset.publicId),
+                    cloudinaryResourceType: normalizeText(asset.cloudinaryResourceType || asset.resource_type || asset.resourceType || 'raw'),
+                    originalFilename: normalizeText(asset.originalFilename || asset.original_filename)
+                }))
+                : [];
+
+            const legacyAssets = [
+                paper.cloudinaryPublicId ? {
+                    assetType: 'question',
+                    topic: normalizeText(paper.topic),
+                    pdfUrl: normalizeText(paper.pdfUrl),
+                    cloudinaryPublicId: normalizeText(paper.cloudinaryPublicId),
+                    cloudinaryResourceType: normalizeText(paper.cloudinaryResourceType || 'raw'),
+                    originalFilename: normalizeText(paper.originalFilename)
+                } : null,
+                paper.solutionCloudinaryPublicId ? {
+                    assetType: 'solution',
+                    topic: normalizeText(paper.topic),
+                    pdfUrl: normalizeText(paper.solutionPdfUrl),
+                    cloudinaryPublicId: normalizeText(paper.solutionCloudinaryPublicId),
+                    cloudinaryResourceType: normalizeText(paper.solutionCloudinaryResourceType || 'raw'),
+                    originalFilename: normalizeText(paper.solutionOriginalFilename)
+                } : null,
+                paper.noteCloudinaryPublicId ? {
+                    assetType: 'note',
+                    topic: normalizeText(paper.topic),
+                    pdfUrl: normalizeText(paper.notePdfUrl),
+                    cloudinaryPublicId: normalizeText(paper.noteCloudinaryPublicId),
+                    cloudinaryResourceType: normalizeText(paper.noteCloudinaryResourceType || 'raw'),
+                    originalFilename: normalizeText(paper.noteOriginalFilename)
+                } : null
+            ].filter(Boolean);
+
+            const seen = new Set();
+            return [...modernAssets, ...legacyAssets].filter(asset => {
+                const key = asset.cloudinaryPublicId || `${asset.assetType}:${asset.pdfUrl}`;
+                if (!key || seen.has(key)) return false;
+                seen.add(key);
+                return true;
+            });
+        }
+
+        function getQuestionAssets(paper) {
+            return getAssets(paper).filter(asset => asset.assetType === 'question' || asset.assetType === 'solution');
+        }
+
+        function getNoteAssets(paper) {
+            return getAssets(paper).filter(asset => asset.assetType === 'note');
+        }
+
+        function courseKeyFor(paper) {
+            return normalizeText(paper.courseCode).toUpperCase() || paper.id;
+        }
+
+        function getCourseGroups(papers = approvedPapers) {
+            const groups = new Map();
+            papers.forEach(paper => {
+                const key = courseKeyFor(paper);
+                if (!groups.has(key)) {
+                    groups.set(key, {
+                        key,
+                        code: normalizeText(paper.courseCode).toUpperCase(),
+                        name: normalizeText(paper.courseName) || 'Untitled Course',
+                        papers: [],
+                        assets: []
+                    });
+                }
+                const group = groups.get(key);
+                group.papers.push(paper);
+                group.assets.push(...getAssets(paper));
+            });
+            return [...groups.values()].sort((a, b) => a.code.localeCompare(b.code));
+        }
+
+        function courseMatches(group, search) {
+            if (!search) return true;
+            const haystack = [
+                group.code,
+                group.name,
+                ...group.papers.flatMap(paper => [paper.topic, paper.examType, paper.trimester])
+            ].join(' ').toLowerCase();
+            return haystack.includes(search);
+        }
+
+        function assetLabel(asset) {
+            if (asset.assetType === 'note') return 'Notes';
+            return asset.assetType.charAt(0).toUpperCase() + asset.assetType.slice(1);
+        }
+
+        function renderResourceCards(paper, allowedTypes = ['question', 'solution', 'note']) {
+            return getAssets(paper)
+                .filter(asset => allowedTypes.includes(asset.assetType))
+                .map(asset => `
+                    <article class="resource-card">
+                        <div class="chips">
+                            <span class="pill ${asset.assetType === 'note' ? 'pill-teal' : asset.assetType === 'solution' ? 'pill-blue' : ''}">${escapeHtml(assetLabel(asset))}</span>
+                            ${paper.examType ? `<span class="pill pill-blue">${escapeHtml(paper.examType)}</span>` : ''}
+                            ${paper.trimester ? `<span class="pill pill-teal">${escapeHtml(paper.trimester)}</span>` : ''}
+                        </div>
+                        <h3>${escapeHtml(asset.topic || paper.topic || paper.title || 'Course Material')}</h3>
+                        <p class="muted">${escapeHtml(paper.courseCode)} - ${escapeHtml(paper.courseName || 'Course')} submitted by ${escapeHtml(paper.submitterName || getEmailHandle(getSubmitterEmail(paper)))}</p>
+                        <div class="resource-actions">
+                            <a class="button-link" href="${escapeHtml(asset.pdfUrl)}" target="_blank" rel="noopener">Open File</a>
+                            <span class="muted">${escapeHtml(asset.originalFilename || formatDate(paper.submittedAt))}</span>
+                        </div>
+                    </article>
+                `);
+        }
+
+        /* ── Dashboard ── */
+        function renderDashboard() {
+            const courseCount = $('courseCount');
+            const questionCount = $('questionCount');
+            const solutionCount = $('solutionCount');
+            const courseSearch = $('courseSearch');
+            const dashboardCourses = $('dashboardCourses');
+            const selectedCourseTitle = $('selectedCourseTitle');
+            const selectedCourseMeta = $('selectedCourseMeta');
+            const selectedResources = $('selectedResources');
+            if (!dashboardCourses) return;
+
+            const groups = getCourseGroups(approvedPapers.filter(paper => getQuestionAssets(paper).length > 0));
+            const search = normalizeText(courseSearch?.value).toLowerCase();
+            const filtered = groups.filter(group => courseMatches(group, search));
+
+            if (courseCount) courseCount.textContent = String(groups.length);
+            if (questionCount) questionCount.textContent = String(approvedPapers.reduce((total, paper) => total + getAssets(paper).filter(asset => asset.assetType === 'question').length, 0));
+            if (solutionCount) solutionCount.textContent = String(approvedPapers.reduce((total, paper) => total + getAssets(paper).filter(asset => asset.assetType === 'solution').length, 0));
+
+            if (!selectedCourseKey && filtered.length > 0) selectedCourseKey = filtered[0].key;
+
+            if (filtered.length === 0) {
+                dashboardCourses.innerHTML = '<div class="empty">No approved question courses match this search.</div>';
+                if (selectedCourseTitle) selectedCourseTitle.textContent = 'Selected Course';
+                if (selectedCourseMeta) selectedCourseMeta.textContent = 'No question course selected.';
+                if (selectedResources) selectedResources.innerHTML = '<div class="empty">Approved questions and solutions will appear here.</div>';
+                return;
+            }
+
+            dashboardCourses.innerHTML = filtered.slice(0, 8).map(group => {
+                const questionTotal = group.papers.reduce((total, paper) => total + getQuestionAssets(paper).length, 0);
+                return `
+                    <button class="course-button ${group.key === selectedCourseKey ? 'active' : ''}" type="button" data-course="${escapeHtml(group.key)}">
+                        <strong>${escapeHtml(group.code)} - ${escapeHtml(group.name)}</strong>
+                        <span class="muted">${questionTotal} question/solution file${questionTotal === 1 ? '' : 's'}</span>
+                    </button>
+                `;
+            }).join('');
+
+            const group = groups.find(item => item.key === selectedCourseKey) || filtered[0];
+            if (selectedCourseTitle) selectedCourseTitle.textContent = `${group.code} - ${group.name}`;
+            if (selectedCourseMeta) selectedCourseMeta.textContent = 'Questions and solutions only';
+            if (selectedResources) {
+                selectedResources.innerHTML = group.papers.flatMap(paper => renderResourceCards(paper, ['question', 'solution'])).join('')
+                    || '<div class="empty">No questions or solutions are attached to this course yet.</div>';
+            }
+        }
+
+        /* ── All Courses ── */
+        function renderAllCourses() {
+            const allCourseSearch = $('allCourseSearch');
+            const assetFilter = $('assetFilter');
+            const allCoursesGrid = $('allCoursesGrid');
+            if (!allCoursesGrid) return;
+
+            const search = normalizeText(allCourseSearch?.value).toLowerCase();
+            const filter = normalizeText(assetFilter?.value);
+            const groups = getCourseGroups().filter(group => {
+                const matchesSearch = courseMatches(group, search);
+                const matchesType = !filter || group.assets.some(asset => asset.assetType === filter);
+                return matchesSearch && matchesType;
+            });
+
+            if (groups.length === 0) {
+                allCoursesGrid.innerHTML = '<div class="empty">No approved course materials match the current filters.</div>';
+                return;
+            }
+
+            allCoursesGrid.innerHTML = groups.map(group => {
+                const questionTypes = filter === 'question' || filter === 'solution'
+                    ? [filter]
+                    : ['question', 'solution'];
+                const noteTypes = filter === 'note' || !filter ? ['note'] : [];
+                const visibleQuestionCards = filter === 'note'
+                    ? []
+                    : group.papers.flatMap(paper => renderResourceCards(paper, questionTypes));
+                const visibleNoteCards = noteTypes.length
+                    ? group.papers.flatMap(paper => renderResourceCards(paper, noteTypes))
+                    : [];
+                return `
+                    <article class="course-card">
+                        <div>
+                            <span class="pill">${escapeHtml(group.code)}</span>
+                            <h3 style="margin-top: 10px;">${escapeHtml(group.name)}</h3>
+                            <p class="muted">${group.assets.length} approved material${group.assets.length === 1 ? '' : 's'}</p>
+                        </div>
+                        <div class="chips">
+                            <span class="pill">${group.assets.filter(asset => asset.assetType === 'question').length} questions</span>
+                            <span class="pill pill-blue">${group.assets.filter(asset => asset.assetType === 'solution').length} solutions</span>
+                            <span class="pill pill-teal">${group.assets.filter(asset => asset.assetType === 'note').length} notes</span>
+                        </div>
+                        <div class="course-section">
+                            <h4>Questions & Solutions</h4>
+                            ${visibleQuestionCards.slice(0, 4).join('') || '<div class="empty">No questions or solutions yet.</div>'}
+                        </div>
+                        <div class="course-section">
+                            <h4>Notes</h4>
+                            ${visibleNoteCards.slice(0, 4).join('') || '<div class="empty">No notes yet.</div>'}
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        /* ── Page Render ── */
+        function renderCurrentPage() {
+            const page = document.body.dataset.page;
+            if (page === 'dashboard') renderDashboard();
+            if (page === 'courses') renderAllCourses();
+        }
+
+        /* ── Firebase Listener ── */
+        function listenForApprovedPapers() {
+            const approvedQuery = query(collection(db, QUESTION_COLLECTION), where('status', '==', 'approved'));
+            onSnapshot(approvedQuery, snapshot => {
+                approvedPapers = snapshot.docs.map(paperFromDoc).sort(sortNewestFirst);
+                renderCurrentPage();
+            }, error => {
+                console.error('Could not load approved materials:', error);
+                const dashboardCourses = $('dashboardCourses');
+                const allCoursesGrid = $('allCoursesGrid');
+                if (dashboardCourses) dashboardCourses.innerHTML = '<div class="empty">Could not load approved questions. Check Firestore read rules.</div>';
+                if (allCoursesGrid) allCoursesGrid.innerHTML = '<div class="empty">Could not load approved materials. Check Firestore read rules.</div>';
+            });
+        }
+
+        /* ── Upload Handlers ── */
+        async function requestUploadSignature(assetType, courseCode, topic) {
+            const response = await fetch('/api/cloudinary/sign-upload', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    assetType,
+                    courseCode,
+                    assetLabel: `${courseCode} ${assetType} - ${topic}`,
+                    resourceType: 'auto'
+                })
+            });
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error || `Could not sign ${assetType} upload.`);
+            return data;
+        }
+
+        async function uploadToCloudinary(assetType, file, courseCode, topic) {
+            const signature = await requestUploadSignature(assetType, courseCode, topic);
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('api_key', signature.apiKey);
+            formData.append('signature', signature.signature);
+            Object.entries(signature.uploadParams).forEach(([key, value]) => {
+                formData.append(key, value);
+            });
+
+            const response = await fetch(signature.uploadUrl, { method: 'POST', body: formData });
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error?.message || `Could not upload ${assetType}.`);
+
+            return {
+                assetType,
+                topic,
+                pdfUrl: data.secure_url,
+                cloudinaryPublicId: data.public_id,
+                cloudinaryResourceType: data.resource_type || 'raw',
+                cloudinaryAssetId: data.asset_id || '',
+                bytes: data.bytes || file.size,
+                originalFilename: data.original_filename || file.name
+            };
+        }
+
+        async function saveSubmission(payload, materialAssets) {
+            const validationResponse = await fetch('/api/questions/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...payload, materialAssets })
+            });
+            const validationData = await validationResponse.json();
+            if (!validationResponse.ok) throw new Error(validationData.error || 'Could not validate upload.');
+
+            await addDoc(collection(db, QUESTION_COLLECTION), {
+                ...validationData.submission,
+                courseSearch: `${payload.courseCode} ${payload.courseName} ${payload.topic}`.toLowerCase(),
+                materialGroup: materialAssets.some(asset => asset.assetType === 'note') ? 'notes' : 'questions',
+                submittedAt: serverTimestamp()
+            });
+        }
+
+        async function handleQuestionUpload(event) {
+            event.preventDefault();
+            const status = $('questionUploadStatus');
+            const button = $('questionUploadButton');
+            const payload = {
+                submitterName: normalizeText($('questionSubmitterName').value),
+                submitterEmail: normalizeText($('questionSubmitterEmail').value).toLowerCase(),
+                courseCode: normalizeText($('questionCourseCode').value).replace(/\s+/g, ' ').toUpperCase(),
+                courseName: normalizeText($('questionCourseName').value),
+                topic: normalizeText($('questionTopic').value),
+                trimester: normalizeText($('questionTrimester').value),
+                examType: normalizeText($('questionExamType').value)
+            };
+            const questionFile = $('questionFile').files[0];
+            const solutionFile = $('solutionFile').files[0];
+
+            if (!isUniversityEmail(payload.submitterEmail)) {
+                setStatus(status, 'Please use a UIU university email ending in .uiu.ac.bd.', 'error');
+                return;
+            }
+
+            if (!questionFile) {
+                setStatus(status, 'Attach a question file before submitting.', 'error');
+                return;
+            }
+
+            try {
+                button.disabled = true;
+                setStatus(status, 'Uploading question and solution files to Cloudinary...', 'info');
+                const materialAssets = [await uploadToCloudinary('question', questionFile, payload.courseCode, payload.topic)];
+                if (solutionFile) {
+                    materialAssets.push(await uploadToCloudinary('solution', solutionFile, payload.courseCode, payload.topic));
+                }
+                setStatus(status, 'Saving question upload for admin approval...', 'info');
+                await saveSubmission(payload, materialAssets);
+                event.target.reset();
+                setStatus(status, 'Question submitted. Admin approval email will be sent after review.', 'success');
+            } catch (error) {
+                console.error('Question upload failed:', error);
+                setStatus(status, error.message || 'Question upload failed.', 'error');
+            } finally {
+                button.disabled = false;
+            }
+        }
+
+        async function handleNotesUpload(event) {
+            event.preventDefault();
+            const status = $('notesUploadStatus');
+            const button = $('notesUploadButton');
+            const payload = {
+                submitterName: normalizeText($('notesSubmitterName').value),
+                submitterEmail: normalizeText($('notesSubmitterEmail').value).toLowerCase(),
+                courseCode: normalizeText($('notesCourseCode').value).replace(/\s+/g, ' ').toUpperCase(),
+                courseName: normalizeText($('notesCourseName').value),
+                topic: normalizeText($('notesTopic').value),
+                trimester: '',
+                examType: 'Notes'
+            };
+            const notesFile = $('notesFile').files[0];
+
+            if (!isUniversityEmail(payload.submitterEmail)) {
+                setStatus(status, 'Please use a UIU university email ending in .uiu.ac.bd.', 'error');
+                return;
+            }
+
+            if (!notesFile) {
+                setStatus(status, 'Attach a notes file before submitting.', 'error');
+                return;
+            }
+
+            try {
+                button.disabled = true;
+                setStatus(status, 'Uploading notes file to Cloudinary...', 'info');
+                const materialAssets = [await uploadToCloudinary('note', notesFile, payload.courseCode, payload.topic)];
+                setStatus(status, 'Saving notes upload for admin approval...', 'info');
+                await saveSubmission(payload, materialAssets);
+                event.target.reset();
+                setStatus(status, 'Notes submitted. Admin approval email will be sent after review.', 'success');
+            } catch (error) {
+                console.error('Notes upload failed:', error);
+                setStatus(status, error.message || 'Notes upload failed.', 'error');
+            } finally {
+                button.disabled = false;
+            }
+        }
+
+        /* ── Event Bindings ── */
+        function bindDashboard() {
+            const search = $('courseSearch');
+            const searchButton = $('courseSearchButton');
+            const list = $('dashboardCourses');
+            if (search) search.addEventListener('input', renderDashboard);
+            if (searchButton) searchButton.addEventListener('click', renderDashboard);
+            if (list) {
+                list.addEventListener('click', event => {
+                    const button = event.target.closest('[data-course]');
+                    if (!button) return;
+                    selectedCourseKey = button.getAttribute('data-course');
+                    renderDashboard();
+                });
+            }
+        }
+
+        function bindCourses() {
+            const allCourseSearch = $('allCourseSearch');
+            const assetFilter = $('assetFilter');
+            if (allCourseSearch) allCourseSearch.addEventListener('input', renderAllCourses);
+            if (assetFilter) assetFilter.addEventListener('change', renderAllCourses);
+        }
+
+        function bindUpload() {
+            const questionForm = $('questionUploadForm');
+            const notesForm = $('notesUploadForm');
+            if (questionForm) questionForm.addEventListener('submit', handleQuestionUpload);
+            if (notesForm) notesForm.addEventListener('submit', handleNotesUpload);
+        }
+
+        /* ── Init ── */
+        bindDashboard();
+        bindCourses();
+        bindUpload();
+        listenForApprovedPapers();
+        navigateTo(getPageFromHash());
+    </script>
 </body>
 </html>
