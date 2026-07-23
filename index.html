@@ -974,12 +974,12 @@
                         <h3>Upload Files</h3>
                         
                         <div class="input-group">
-                            <label class="input-label">Main File (PDF/Image)</label>
+                            <label class="input-label">Main File (PDF/Image) <span style="font-size:0.8rem; color:var(--orange); font-weight:500;">(Max 5MB)</span></label>
                             <input type="file" id="upMainFile" class="input-control" accept=".pdf,.png,.jpg,.jpeg" required>
                         </div>
                         
                         <div class="input-group" id="solutionFileGroup">
-                            <label class="input-label">Solution File (Optional)</label>
+                            <label class="input-label">Solution File (Optional) <span style="font-size:0.8rem; color:var(--orange); font-weight:500;">(Max 5MB)</span></label>
                             <input type="file" id="upSolutionFile" class="input-control" accept=".pdf,.png,.jpg,.jpeg">
                         </div>
 
@@ -1018,16 +1018,17 @@
 
     <!-- PDF Viewer Modal -->
     <div class="modal-overlay" id="pdfModal">
-        <div class="modal-content">
+        <div class="modal-content" style="width: 95vw; max-width: 1400px; height: 92vh; display: flex; flex-direction: column;">
             <div class="modal-header">
                 <h3 id="pdfModalTitle" style="margin:0;">Document Viewer</h3>
                 <div style="display:flex; gap:0.5rem;">
-                    <a id="pdfModalDownload" href="#" target="_blank" class="btn btn-outline" style="padding: 0.5rem;">Download</a>
-                    <button class="btn btn-outline" style="padding: 0.5rem;" onclick="closePdfViewer()">Close</button>
+                    <a id="pdfModalOpenExternal" href="#" target="_blank" class="btn btn-outline" style="padding:0.4rem 0.8rem; font-size:0.85rem;"><i class="fas fa-external-link-alt"></i> Open External</a>
+                    <a id="pdfModalDownload" href="#" target="_blank" download class="btn btn-primary" style="padding:0.4rem 0.8rem; font-size:0.85rem;"><i class="fas fa-download"></i> Download PDF</a>
+                    <button class="btn btn-outline" style="padding:0.4rem 0.8rem; font-size:0.85rem;" onclick="closePdfViewer()">Close</button>
                 </div>
             </div>
-            <div class="modal-body">
-                <iframe id="pdfModalIframe" src=""></iframe>
+            <div class="modal-body" style="flex: 1; height: 100%;">
+                <iframe id="pdfModalIframe" src="" style="width: 100%; height: 100%; border: none; min-height: 500px;"></iframe>
             </div>
         </div>
     </div>
@@ -1401,9 +1402,18 @@
             let examLabel = paper.examType || '';
             if (type !== 'Question') examLabel = '';
 
+            const mainPdf = paper.pdfUrl || paper.fileUrl || paper.notePdfUrl || (paper.materialAssets && paper.materialAssets.find(a => a.assetType !== 'solution')?.pdfUrl) || (paper.materialAssets && paper.materialAssets[0]?.pdfUrl);
+            const solPdf = paper.solutionPdfUrl || paper.solutionUrl || (paper.materialAssets && paper.materialAssets.find(a => a.assetType === 'solution')?.pdfUrl);
+
             let downloadLinks = '';
-            if (paper.fileUrl) downloadLinks += `<button class="btn btn-outline" onclick="openPdfViewer('${paper.fileUrl}', '${paper.courseCode} - ${type}')" style="padding:0.5rem 1rem; font-size:0.875rem;">View File</button>`;
-            if (paper.solutionUrl) downloadLinks += `<button class="btn btn-primary" onclick="openPdfViewer('${paper.solutionUrl}', '${paper.courseCode} - Solution')" style="padding:0.5rem 1rem; font-size:0.875rem;">View Solution</button>`;
+            if (mainPdf) {
+                downloadLinks += `<button class="btn btn-outline" onclick="openPdfViewer('${mainPdf}', '${paper.courseCode} - ${paper.topic || paper.type}')" style="padding:0.45rem 0.85rem; font-size:0.85rem;"><i class="fas fa-eye"></i> View PDF</button>
+                                  <a href="${mainPdf}" download target="_blank" class="btn btn-primary" style="padding:0.45rem 0.85rem; font-size:0.85rem;"><i class="fas fa-download"></i> Download</a>`;
+            }
+            if (solPdf) {
+                downloadLinks += `<button class="btn btn-outline" onclick="openPdfViewer('${solPdf}', '${paper.courseCode} - Solution')" style="padding:0.45rem 0.85rem; font-size:0.85rem;"><i class="fas fa-eye"></i> View Solution</button>
+                                  <a href="${solPdf}" download target="_blank" class="btn btn-primary" style="padding:0.45rem 0.85rem; font-size:0.85rem;"><i class="fas fa-download"></i> Download Solution</a>`;
+            }
 
             const topicStr = paper.topic ? `<div style="font-weight:500;">${paper.topic}</div>` : '';
             
@@ -1948,6 +1958,14 @@
                 const solFile = document.getElementById('upSolutionFile')?.files[0];
                 if (!mainFile) throw new Error('Please attach a file before submitting.');
 
+                const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB limit
+                if (mainFile && mainFile.size > MAX_FILE_SIZE) {
+                    throw new Error(`The file "${mainFile.name}" is ${(mainFile.size / (1024 * 1024)).toFixed(2)}MB, which exceeds the 5MB limit. Please upload a file smaller than 5MB.`);
+                }
+                if (solFile && solFile.size > MAX_FILE_SIZE) {
+                    throw new Error(`The solution file "${solFile.name}" is ${(solFile.size / (1024 * 1024)).toFixed(2)}MB, which exceeds the 5MB limit. Please upload a file smaller than 5MB.`);
+                }
+
                 // Topic is required only for Notes; optional for Questions (Midterm, Final, Quiz, Assignment)
                 if (type === 'Notes' && !topic) {
                     throw new Error('Please enter a topic or title for your notes.');
@@ -2025,6 +2043,7 @@
             
             document.getElementById('pdfModalIframe').src = iframeUrl;
             document.getElementById('pdfModalDownload').href = url;
+            document.getElementById('pdfModalOpenExternal').href = url;
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
         };
