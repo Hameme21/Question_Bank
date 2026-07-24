@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UIU CSE Question Bank</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23f37021'/%3E%3Ctext x='16' y='23' text-anchor='middle' fill='white' font-family='Arial,sans-serif' font-weight='bold' font-size='22'%3EQ%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -134,8 +135,11 @@
         }
 
         .nav-links {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
-            gap: 1.5rem;
+            gap: 0.5rem;
             align-items: center;
         }
 
@@ -145,6 +149,11 @@
             transition: var(--transition);
             padding: 0.5rem 1rem;
             border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.9rem;
+            white-space: nowrap;
         }
 
         .nav-link:hover {
@@ -157,6 +166,41 @@
             background: var(--orange-light);
         }
 
+        /* Theme Toggle Animation */
+        .theme-icon-wrapper {
+            position: relative;
+            width: 22px;
+            height: 22px;
+            overflow: hidden;
+        }
+
+        .icon-sun, .icon-moon {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+        }
+
+        /* Light mode: show sun, hide moon */
+        .icon-sun {
+            transform: rotate(0deg) scale(1);
+            opacity: 1;
+        }
+        .icon-moon {
+            transform: rotate(90deg) scale(0);
+            opacity: 0;
+        }
+
+        /* Dark mode: show moon, hide sun */
+        [data-theme="dark"] .icon-sun {
+            transform: rotate(-90deg) scale(0);
+            opacity: 0;
+        }
+        [data-theme="dark"] .icon-moon {
+            transform: rotate(0deg) scale(1);
+            opacity: 1;
+        }
+
         .theme-toggle {
             padding: 0.5rem;
             border-radius: var(--radius-full);
@@ -165,10 +209,38 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
 
         .theme-toggle:hover {
             background: var(--surface-2);
+        }
+
+        .theme-toggle.animating::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            animation: themeRipple 0.6s ease forwards;
+        }
+
+        @keyframes themeRipple {
+            from {
+                width: 0; height: 0;
+                opacity: 0.4;
+            }
+            to {
+                width: 60px; height: 60px;
+                opacity: 0;
+            }
+        }
+
+        [data-theme="light"] .theme-toggle.animating::after {
+            background: radial-gradient(circle, #fbbf24, transparent);
+        }
+
+        [data-theme="dark"] .theme-toggle.animating::after {
+            background: radial-gradient(circle, #6366f1, transparent);
         }
 
         .mobile-menu-btn {
@@ -837,6 +909,66 @@
             font-weight: 500;
         }
 
+        /* Mobile Bottom Navigation */
+        .mobile-bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 200;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-top: 1px solid var(--glass-border);
+            padding: 0.4rem 0;
+            padding-bottom: env(safe-area-inset-bottom, 0.4rem);
+        }
+
+        .mobile-bottom-nav {
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.15rem;
+            padding: 0.35rem 0.75rem;
+            color: var(--text-muted);
+            font-size: 0.65rem;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            text-decoration: none;
+            position: relative;
+        }
+
+        .bottom-nav-item svg {
+            transition: var(--transition);
+        }
+
+        .bottom-nav-item.active {
+            color: var(--orange);
+        }
+
+        .bottom-nav-item.active svg {
+            transform: translateY(-2px);
+        }
+
+        .bottom-nav-item.active::after {
+            content: '';
+            position: absolute;
+            top: -0.4rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--orange), var(--orange-2));
+            border-radius: 2px;
+        }
+
         /* Responsive */
         @media (max-width: 1024px) {
             .main-content {
@@ -848,6 +980,15 @@
         }
 
         @media (max-width: 768px) {
+            .mobile-bottom-nav {
+                display: flex;
+            }
+            .main-content {
+                padding-bottom: 5rem; /* Space for bottom nav */
+            }
+            .mobile-menu-btn {
+                display: none !important; /* Hide hamburger, use bottom nav instead */
+            }
             .topbar {
                 padding: 0 1rem;
                 height: 56px;
@@ -1067,15 +1208,17 @@
             UIU Question Bank
         </a>
         <nav class="nav-links" id="navLinks">
-            <a href="#dashboard" class="nav-link active">Dashboard</a>
-            <a href="#courses" class="nav-link">Courses</a>
-            <a href="#upload" class="nav-link">Upload</a>
-            <a href="#favorites" class="nav-link">Favorites</a>
+            <a href="#dashboard" class="nav-link active" data-page="dashboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> Dashboard</a>
+            <a href="#courses" class="nav-link" data-page="courses"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg> Courses</a>
+            <a href="#upload" class="nav-link" data-page="upload"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Upload</a>
+            <a href="#favorites" class="nav-link" data-page="favorites"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg> Favorites</a>
         </nav>
-        <div style="display:flex; gap: 1rem; align-items: center;">
-            <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">
-                <!-- Sun/Moon icon updated via JS -->
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <div style="display:flex; gap: 0.75rem; align-items: center;">
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle Theme">
+                <div class="theme-icon-wrapper">
+                    <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </div>
             </button>
             <button class="mobile-menu-btn" id="mobileMenuBtn">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
@@ -1490,11 +1633,36 @@
             return { year, season: seasons[seasonPart] || '?', label: `${seasons[seasonPart] || '?'} ${year}` };
         }
         function generateSemesters() {
+            // Semester schedule:
+            // Spring (1): Feb-Jun, Summer (2): Jul-Oct, Fall (3): Nov-Feb
+            const now = new Date();
+            const currentMonth = now.getMonth() + 1; // 1-12
+            const currentYear = now.getFullYear();
+            
+            let currentSemYear, currentSemSeason;
+            if (currentMonth >= 2 && currentMonth <= 6) {
+                currentSemSeason = 1; // Spring
+                currentSemYear = currentYear;
+            } else if (currentMonth >= 7 && currentMonth <= 10) {
+                currentSemSeason = 2; // Summer
+                currentSemYear = currentYear;
+            } else {
+                currentSemSeason = 3; // Fall
+                currentSemYear = currentMonth >= 11 ? currentYear : currentYear - 1;
+            }
+            
+            const currentSemCode = `${currentSemYear - 2000}${currentSemSeason}`;
+            
+            // Generate from Spring 2021 up to and including the current semester
             const semesters = [];
-            for (let y = 21; y <= 27; y++) {
+            for (let y = 21; y <= 30; y++) {
                 for (let s = 1; s <= 3; s++) {
-                    semesters.push({ code: `${y}${s}`, ...decodeSemester(`${y}${s}`) });
+                    const code = `${y}${s}`;
+                    if (parseInt(code) > parseInt(currentSemCode)) break;
+                    semesters.push({ code, ...decodeSemester(code) });
                 }
+                // Check if we've passed current semester
+                if (y >= (currentSemYear - 2000)) break;
             }
             return semesters.reverse(); // Newest first
         }
@@ -1620,6 +1788,11 @@
                 else link.classList.remove('active');
             });
 
+            // Sync bottom nav active state
+            document.querySelectorAll('.bottom-nav-item').forEach(item => {
+                item.classList.toggle('active', item.getAttribute('data-page') === currentRoute.page);
+            });
+
             // Mobile menu close
             document.getElementById('navLinks').classList.remove('active');
 
@@ -1636,9 +1809,12 @@
             const savedTheme = localStorage.getItem('qb_theme') || 'light';
             document.documentElement.setAttribute('data-theme', savedTheme);
         }
-        document.getElementById('themeToggle').addEventListener('click', () => {
+        const themeToggleBtn = document.getElementById('themeToggle');
+        themeToggleBtn.addEventListener('click', () => {
             const current = document.documentElement.getAttribute('data-theme');
             const next = current === 'dark' ? 'light' : 'dark';
+            themeToggleBtn.classList.add('animating');
+            setTimeout(() => themeToggleBtn.classList.remove('animating'), 600);
             document.documentElement.setAttribute('data-theme', next);
             localStorage.setItem('qb_theme', next);
         });
@@ -2380,5 +2556,24 @@
         }
 
     </script>
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav" id="mobileBottomNav">
+        <a href="#dashboard" class="bottom-nav-item active" data-page="dashboard">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <span>Home</span>
+        </a>
+        <a href="#courses" class="bottom-nav-item" data-page="courses">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            <span>Courses</span>
+        </a>
+        <a href="#upload" class="bottom-nav-item" data-page="upload">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            <span>Upload</span>
+        </a>
+        <a href="#favorites" class="bottom-nav-item" data-page="favorites">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+            <span>Favorites</span>
+        </a>
+    </nav>
 </body>
 </html>
