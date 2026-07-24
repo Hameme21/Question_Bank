@@ -2564,5 +2564,28 @@
             <span>Favorites</span>
         </a>
     </nav>
+    <script>
+        // Keep the mobile bottom nav pinned to the actual visible viewport.
+        // Fixes Chrome/Android's collapsing address+toolbar causing fixed
+        // elements to appear to shift/disappear during scroll.
+        (function pinMobileNav() {
+            var nav = document.getElementById('mobileBottomNav');
+            if (!nav || !window.visualViewport) return;
+
+            function update() {
+                var vv = window.visualViewport;
+                var offset = (window.innerHeight - vv.height - vv.offsetTop);
+                if (offset < 0) offset = 0;
+                nav.style.transform = offset > 0
+                    ? 'translateY(-' + offset + 'px) translateZ(0)'
+                    : 'translateZ(0)';
+            }
+
+            window.visualViewport.addEventListener('resize', update);
+            window.visualViewport.addEventListener('scroll', update);
+            window.addEventListener('load', update);
+            update();
+        })();
+    </script>
 </body>
 </html>
